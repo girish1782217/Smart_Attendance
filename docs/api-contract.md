@@ -92,3 +92,13 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 | PUT | `/api/v1/attendance-sessions/{id}/records` | ADMIN, FACULTY (own only) — bulk upsert; `409` if the session is already `SUBMITTED` |
 | GET | `/api/v1/attendance-sessions/{id}/records` | ADMIN, FACULTY (own only) — current marks, joined with student name/roll number |
 | POST | `/api/v1/attendance-sessions/{id}/submit` | ADMIN, FACULTY (own only) — one-way `SCHEDULED → SUBMITTED`; `409` if the roster isn't fully marked or already submitted |
+
+**Corrections (SPEC-09)**
+
+| Method | Path | Auth |
+|---|---|---|
+| POST | `/api/v1/attendance-records/{id}/corrections` | ADMIN, FACULTY (own session), STUDENT (own record) — `409` if the session isn't `SUBMITTED` yet or a request is already pending |
+| GET | `/api/v1/corrections?page=&page_size=&status=&attendance_record_id=` | ADMIN, FACULTY, STUDENT — auto-scoped: ADMIN sees all, FACULTY sees their own sessions' requests, STUDENT sees requests about their own records |
+| GET | `/api/v1/corrections/{id}` | ADMIN, FACULTY (own), STUDENT (own) |
+| POST | `/api/v1/corrections/{id}/approve` | ADMIN, FACULTY (own session, never their own submitted request) |
+| POST | `/api/v1/corrections/{id}/reject` | ADMIN, FACULTY (own session, never their own submitted request) |

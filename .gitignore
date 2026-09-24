@@ -25,6 +25,9 @@ frontend/coverage/
 frontend/playwright-report/
 frontend/test-results/
 
+# Claude Code harness state (not project files)
+.claude/
+
 # Editors / OS
 .vscode/
 .idea/

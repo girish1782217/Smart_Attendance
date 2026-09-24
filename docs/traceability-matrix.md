@@ -16,7 +16,7 @@ the last full regression run.
 | REQ-SESSION-001 | Attendance session creation & validation | SPEC-07 | `app/services/attendance_session_service.py`, `app/services/scoping.py` | `test_attendance_sessions.py` | PASS (83/83) |
 | REQ-ATT-001 | Attendance recording (all statuses, bulk, submit) | SPEC-08 | `app/services/attendance_record_service.py` | `test_attendance_recording.py` | PASS (101/101) |
 | REQ-ATT-002 | Attendance % computed per documented formula | SPEC-08/11 | `app/services/attendance_calculations.py` | `test_attendance_calculations.py` | PASS (101/101) |
-| REQ-CORR-001 | Correction request/review/approve/reject + audit | SPEC-09 | `CorrectionService` | `test_corrections.py` | PENDING |
+| REQ-CORR-001 | Correction request/review/approve/reject + audit | SPEC-09 | `app/services/correction_service.py`, `app/services/audit_service.py` | `test_corrections.py` | PASS (111/111) |
 | REQ-HIST-001 | Attendance history filtering | SPEC-10 | `HistoryService` | `test_history.py` | PENDING |
 | REQ-LOW-001 | Low-attendance detection vs configurable threshold | SPEC-11 | `LowAttendanceService` | `test_low_attendance.py` | PENDING |
 | REQ-REPORT-001 | Student/subject/low-attendance/faculty reports + export | SPEC-12 | `ReportService` | `test_reports.py` | PENDING |

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.roles import RoleName
 from app.models.user import User
-from app.repositories import faculty_repository
+from app.repositories import faculty_repository, student_repository
 
 
 def _is_admin(current_user: User) -> bool:
@@ -17,6 +17,15 @@ def _resolve_own_faculty_id(db: Session, current_user: User) -> int:
             "No faculty profile is linked to the current user.", code="FACULTY_PROFILE_NOT_FOUND"
         )
     return faculty.id
+
+
+def resolve_own_student_id(db: Session, current_user: User) -> int:
+    student = student_repository.get_by_user_id(db, current_user.id)
+    if student is None:
+        raise NotFoundError(
+            "No student profile is linked to the current user.", code="STUDENT_PROFILE_NOT_FOUND"
+        )
+    return student.id
 
 
 def resolve_faculty_filter(
