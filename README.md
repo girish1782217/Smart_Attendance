@@ -7,9 +7,13 @@ A full-stack attendance management system for a college (~5,000 students,
 → test mapping.
 
 **Status**: under active development. All backend specifications (SPEC
-00–16) are complete — 166/166 backend tests passing. Frontend UI is in
-progress; see the traceability matrix for current progress across all 18
-specifications.
+00–16) are complete — 170/170 backend tests passing. The frontend covers
+every role's full workflow (master data management, students/faculty,
+attendance session creation and marking, corrections, reports with CSV
+export, settings, notifications, and the student attendance/AI-insight
+views), but has not yet been through the SPEC 17 UX-polish pass or SPEC 18
+Playwright E2E suite; see the traceability matrix for current progress
+across all 18 specifications.
 
 ## Architecture
 
