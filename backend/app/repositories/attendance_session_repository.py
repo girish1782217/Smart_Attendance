@@ -36,6 +36,41 @@ def find_overlapping(
     )
 
 
+def _apply_filters(query, *, faculty_id, section_id, subject_id, from_date, to_date):
+    filters = {"faculty_id": faculty_id, "section_id": section_id, "subject_id": subject_id}
+    for attr, value in filters.items():
+        if value is not None:
+            query = query.filter(getattr(AttendanceSession, attr) == value)
+    if from_date is not None:
+        query = query.filter(AttendanceSession.session_date >= from_date)
+    if to_date is not None:
+        query = query.filter(AttendanceSession.session_date <= to_date)
+    return query
+
+
+def list_all(
+    db: Session,
+    *,
+    faculty_id: int | None = None,
+    section_id: int | None = None,
+    subject_id: int | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
+) -> list[AttendanceSession]:
+    """Unpaginated — for aggregate counts (e.g. SPEC 12's faculty activity
+    report), where every matching session must be counted, not just one
+    page of them."""
+    query = _apply_filters(
+        db.query(AttendanceSession),
+        faculty_id=faculty_id,
+        section_id=section_id,
+        subject_id=subject_id,
+        from_date=from_date,
+        to_date=to_date,
+    )
+    return query.all()
+
+
 def list_paginated(
     db: Session,
     *,
@@ -47,16 +82,14 @@ def list_paginated(
     from_date: date | None = None,
     to_date: date | None = None,
 ) -> tuple[list[AttendanceSession], int]:
-    query = db.query(AttendanceSession).options(*_EAGER)
-
-    filters = {"faculty_id": faculty_id, "section_id": section_id, "subject_id": subject_id}
-    for attr, value in filters.items():
-        if value is not None:
-            query = query.filter(getattr(AttendanceSession, attr) == value)
-    if from_date is not None:
-        query = query.filter(AttendanceSession.session_date >= from_date)
-    if to_date is not None:
-        query = query.filter(AttendanceSession.session_date <= to_date)
+    query = _apply_filters(
+        db.query(AttendanceSession).options(*_EAGER),
+        faculty_id=faculty_id,
+        section_id=section_id,
+        subject_id=subject_id,
+        from_date=from_date,
+        to_date=to_date,
+    )
 
     total = query.count()
     items = (

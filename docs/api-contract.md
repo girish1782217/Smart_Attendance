@@ -128,3 +128,20 @@ Both report endpoints return `{items, total, page, page_size, threshold}` —
 `threshold` echoes the effective value used (the per-request `?threshold=`
 override if given, otherwise the configured global setting) so the client
 always knows what was actually applied.
+
+**Additional reports (SPEC-12)** — all ADMIN + FACULTY, same filter
+convention (`department_id`/`class_id`/`section_id`/`search`/date range).
+Unlike the low-attendance reports, these show **every** matching row, not
+just below-threshold ones.
+
+| Method | Path |
+|---|---|
+| GET | `/api/v1/reports/student-attendance?...&student_id=&from_date=&to_date=` |
+| GET | `/api/v1/reports/subject-attendance?...&subject_id=&student_id=&from_date=&to_date=` |
+| GET | `/api/v1/reports/faculty-activity?faculty_id=&from_date=&to_date=` — ADMIN must specify `faculty_id`; FACULTY is always their own |
+
+**CSV export** — `.../export` variants of `low-attendance/overall`,
+`low-attendance/by-subject`, `student-attendance`, and `subject-attendance`
+(not `faculty-activity`, a single summary object rather than a list) return
+`text/csv` with **every** matching row, ignoring pagination entirely — that
+is the point of an export.

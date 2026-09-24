@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import case, func, or_
 from sqlalchemy.orm import Session
 
@@ -30,7 +32,15 @@ _COUNT_COLUMNS = (
 
 
 def _apply_common_filters(
-    query, *, department_id: int | None, class_id: int | None, section_id: int | None, search: str | None
+    query,
+    *,
+    department_id: int | None,
+    class_id: int | None,
+    section_id: int | None,
+    student_id: int | None = None,
+    search: str | None,
+    from_date: date | None = None,
+    to_date: date | None = None,
 ):
     if department_id is not None:
         query = query.filter(Program.department_id == department_id)
@@ -38,11 +48,17 @@ def _apply_common_filters(
         query = query.filter(AcademicClass.id == class_id)
     if section_id is not None:
         query = query.filter(Student.section_id == section_id)
+    if student_id is not None:
+        query = query.filter(Student.id == student_id)
     if search:
         like_pattern = f"%{search}%"
         query = query.filter(
             or_(Student.roll_number.ilike(like_pattern), User.full_name.ilike(like_pattern))
         )
+    if from_date is not None:
+        query = query.filter(AttendanceSession.session_date >= from_date)
+    if to_date is not None:
+        query = query.filter(AttendanceSession.session_date <= to_date)
     return query
 
 
@@ -52,12 +68,18 @@ def aggregate_overall(
     department_id: int | None = None,
     class_id: int | None = None,
     section_id: int | None = None,
+    student_id: int | None = None,
     search: str | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
 ):
     """One row per student with any attendance record, aggregated across
     all their subjects. The INNER JOIN to attendance_records naturally
     excludes students with zero records — see the "no attendance data"
-    design note in docs/sdd/11-low-attendance-spec.md."""
+    design note in docs/sdd/11-low-attendance-spec.md. `student_id`/
+    `from_date`/`to_date` were added in SPEC 12 to also serve the general
+    Student Attendance Report; all default to None so SPEC 11's existing
+    calls are unaffected."""
     query = (
         db.query(
             Student.id.label("student_id"),
@@ -66,6 +88,7 @@ def aggregate_overall(
             *_COUNT_COLUMNS,
         )
         .join(AttendanceRecord, AttendanceRecord.student_id == Student.id)
+        .join(AttendanceSession, AttendanceRecord.session_id == AttendanceSession.id)
         .join(User, Student.user_id == User.id)
         .join(Section, Student.section_id == Section.id)
         .join(AcademicClass, Section.class_id == AcademicClass.id)
@@ -73,7 +96,14 @@ def aggregate_overall(
         .filter(Student.is_active.is_(True))
     )
     query = _apply_common_filters(
-        query, department_id=department_id, class_id=class_id, section_id=section_id, search=search
+        query,
+        department_id=department_id,
+        class_id=class_id,
+        section_id=section_id,
+        student_id=student_id,
+        search=search,
+        from_date=from_date,
+        to_date=to_date,
     )
     return query.group_by(Student.id, Student.roll_number, User.full_name).all()
 
@@ -85,7 +115,10 @@ def aggregate_by_subject(
     class_id: int | None = None,
     section_id: int | None = None,
     subject_id: int | None = None,
+    student_id: int | None = None,
     search: str | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
 ):
     """One row per (student, subject) with any attendance record for that
     subject."""
@@ -109,7 +142,14 @@ def aggregate_by_subject(
         .filter(Student.is_active.is_(True))
     )
     query = _apply_common_filters(
-        query, department_id=department_id, class_id=class_id, section_id=section_id, search=search
+        query,
+        department_id=department_id,
+        class_id=class_id,
+        section_id=section_id,
+        student_id=student_id,
+        search=search,
+        from_date=from_date,
+        to_date=to_date,
     )
     if subject_id is not None:
         query = query.filter(Subject.id == subject_id)
