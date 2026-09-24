@@ -5,6 +5,7 @@ from app.api.v1.attendance_records import router as attendance_records_router
 from app.api.v1.attendance_sessions import router as attendance_sessions_router
 from app.api.v1.auth import router as auth_router
 from app.api.v1.corrections import router as corrections_router
+from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.faculty import router as faculty_router
 from app.api.v1.faculty_assignments import router as faculty_assignments_router
 from app.api.v1.master_data import master_data_router
@@ -30,3 +31,4 @@ api_v1_router.include_router(attendance_history_router)
 api_v1_router.include_router(settings_router)
 api_v1_router.include_router(reports_router)
 api_v1_router.include_router(notifications_router)
+api_v1_router.include_router(dashboard_router)

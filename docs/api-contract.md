@@ -162,3 +162,12 @@ dedicated creation endpoint: `POST /attendance-records/{id}/corrections`
 `.../reject` (notifies the original requester), and
 `POST /attendance-sessions/{id}/submit` (notifies any newly-below-threshold
 student in the roster, deduplicated against an existing unread warning).
+
+**Dashboards (SPEC-14)** — each role-exclusive (not ADMIN-sees-everything);
+always the caller's own data, never a specified target.
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/dashboard/admin` | ADMIN only |
+| GET | `/api/v1/dashboard/faculty` | FACULTY only |
+| GET | `/api/v1/dashboard/student` | STUDENT only |

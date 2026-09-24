@@ -38,6 +38,7 @@ def _apply_common_filters(
     class_id: int | None,
     section_id: int | None,
     student_id: int | None = None,
+    faculty_id: int | None = None,
     search: str | None,
     from_date: date | None = None,
     to_date: date | None = None,
@@ -50,6 +51,8 @@ def _apply_common_filters(
         query = query.filter(Student.section_id == section_id)
     if student_id is not None:
         query = query.filter(Student.id == student_id)
+    if faculty_id is not None:
+        query = query.filter(AttendanceSession.faculty_id == faculty_id)
     if search:
         like_pattern = f"%{search}%"
         query = query.filter(
@@ -69,6 +72,7 @@ def aggregate_overall(
     class_id: int | None = None,
     section_id: int | None = None,
     student_id: int | None = None,
+    faculty_id: int | None = None,
     search: str | None = None,
     from_date: date | None = None,
     to_date: date | None = None,
@@ -77,9 +81,9 @@ def aggregate_overall(
     all their subjects. The INNER JOIN to attendance_records naturally
     excludes students with zero records — see the "no attendance data"
     design note in docs/sdd/11-low-attendance-spec.md. `student_id`/
-    `from_date`/`to_date` were added in SPEC 12 to also serve the general
-    Student Attendance Report; all default to None so SPEC 11's existing
-    calls are unaffected."""
+    `from_date`/`to_date` were added in SPEC 12, `faculty_id` in SPEC 14
+    (for the faculty dashboard's own-sessions-only view); all default to
+    None so SPEC 11's existing calls are unaffected."""
     query = (
         db.query(
             Student.id.label("student_id"),
@@ -101,6 +105,7 @@ def aggregate_overall(
         class_id=class_id,
         section_id=section_id,
         student_id=student_id,
+        faculty_id=faculty_id,
         search=search,
         from_date=from_date,
         to_date=to_date,
@@ -116,6 +121,7 @@ def aggregate_by_subject(
     section_id: int | None = None,
     subject_id: int | None = None,
     student_id: int | None = None,
+    faculty_id: int | None = None,
     search: str | None = None,
     from_date: date | None = None,
     to_date: date | None = None,
@@ -147,6 +153,7 @@ def aggregate_by_subject(
         class_id=class_id,
         section_id=section_id,
         student_id=student_id,
+        faculty_id=faculty_id,
         search=search,
         from_date=from_date,
         to_date=to_date,
