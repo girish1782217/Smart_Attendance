@@ -125,6 +125,89 @@ def test_current_user_profile_includes_roles(client, db_session):
     assert set(response.json()["roles"]) == {"ADMIN", "FACULTY"}
 
 
+def test_current_user_profile_has_null_student_and_faculty_id_by_default(client, db_session):
+    user = _create_test_user(db_session)
+    token = auth_service.issue_token_for_user(user)
+
+    response = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["student_id"] is None
+    assert body["faculty_id"] is None
+
+
+def test_current_user_profile_includes_own_student_id(client, make_auth_headers):
+    from app.core.roles import RoleName
+
+    admin_headers = make_auth_headers([RoleName.ADMIN])
+    dept = client.post("/api/v1/departments", json={"name": "CS Me", "code": "CSME"}, headers=admin_headers).json()
+    program = client.post(
+        "/api/v1/programs",
+        json={"name": "B.Tech", "code": "BTME", "department_id": dept["id"]},
+        headers=admin_headers,
+    ).json()
+    academic_class = client.post(
+        "/api/v1/classes", json={"name": "Year 1", "program_id": program["id"]}, headers=admin_headers
+    ).json()
+    section = client.post(
+        "/api/v1/sections", json={"name": "A", "class_id": academic_class["id"]}, headers=admin_headers
+    ).json()
+    student = client.post(
+        "/api/v1/students",
+        json={
+            "email": "me-student@example.com",
+            "full_name": "Me Student",
+            "password": "student-password-123",
+            "roll_number": "ME2025001",
+            "section_id": section["id"],
+        },
+        headers=admin_headers,
+    ).json()
+
+    login_response = client.post(
+        "/api/v1/auth/login", json={"email": "me-student@example.com", "password": "student-password-123"}
+    )
+    token = login_response.json()["access_token"]
+
+    response = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["student_id"] == student["id"]
+    assert body["faculty_id"] is None
+
+
+def test_current_user_profile_includes_own_faculty_id(client, make_auth_headers):
+    from app.core.roles import RoleName
+
+    admin_headers = make_auth_headers([RoleName.ADMIN])
+    dept = client.post("/api/v1/departments", json={"name": "CS Me2", "code": "CSME2"}, headers=admin_headers).json()
+    faculty = client.post(
+        "/api/v1/faculty",
+        json={
+            "email": "me-faculty@example.com",
+            "full_name": "Me Faculty",
+            "password": "faculty-password-123",
+            "employee_id": "EMP-ME-1",
+            "department_id": dept["id"],
+        },
+        headers=admin_headers,
+    ).json()
+
+    login_response = client.post(
+        "/api/v1/auth/login", json={"email": "me-faculty@example.com", "password": "faculty-password-123"}
+    )
+    token = login_response.json()["access_token"]
+
+    response = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["faculty_id"] == faculty["id"]
+    assert body["student_id"] is None
+
+
 def test_logout_revokes_token_so_it_can_no_longer_be_used(client, db_session):
     user = _create_test_user(db_session)
     token = auth_service.issue_token_for_user(user)

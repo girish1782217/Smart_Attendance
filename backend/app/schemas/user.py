@@ -23,9 +23,20 @@ class UserResponse(BaseModel):
 
 class UserWithRolesResponse(UserResponse):
     roles: list[str]
+    # Populated only by /auth/me (see that route) -- a STUDENT/FACULTY caller
+    # needs their own linked profile id to call the /students/{id}/... and
+    # /faculty-assignments endpoints, and has no other way to discover it.
+    student_id: int | None = None
+    faculty_id: int | None = None
 
     @classmethod
-    def from_model(cls, user: "User") -> "UserWithRolesResponse":
+    def from_model(
+        cls,
+        user: "User",
+        *,
+        student_id: int | None = None,
+        faculty_id: int | None = None,
+    ) -> "UserWithRolesResponse":
         return cls(
             id=user.id,
             email=user.email,
@@ -33,6 +44,8 @@ class UserWithRolesResponse(UserResponse):
             is_active=user.is_active,
             created_at=user.created_at,
             roles=[role.name for role in user.roles],
+            student_id=student_id,
+            faculty_id=faculty_id,
         )
 
 
