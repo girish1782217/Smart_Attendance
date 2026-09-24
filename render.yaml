@@ -1,0 +1,34 @@
+databases:
+  - name: smart-attendance-db
+    plan: free
+    databaseName: smart_attendance
+    user: smart_attendance
+
+services:
+  - type: web
+    name: smart-attendance-backend
+    env: python
+    rootDir: backend
+    plan: free
+    healthCheckPath: /health
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: smart-attendance-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_EXPIRE_MINUTES
+        value: "60"
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        sync: false
+      - key: LOW_ATTENDANCE_DEFAULT_THRESHOLD
+        value: "75.0"
+      - key: LOG_LEVEL
+        value: INFO
