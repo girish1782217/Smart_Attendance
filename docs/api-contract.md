@@ -28,3 +28,6 @@
 | POST | `/api/v1/auth/login` | SPEC-02 | none — `{email, password}` → `{access_token, token_type}` |
 | GET | `/api/v1/auth/me` | SPEC-02 | bearer — returns the caller's own profile |
 | POST | `/api/v1/auth/logout` | SPEC-02 | bearer — revokes the presented token |
+| POST | `/api/v1/users` | SPEC-03 | bearer, ADMIN — create a user + assign role(s) |
+| GET | `/api/v1/users` | SPEC-03 | bearer, ADMIN — paginated list (`?page=&page_size=`) |
+| PUT | `/api/v1/users/{id}/roles` | SPEC-03 | bearer, ADMIN — replace a user's role set |

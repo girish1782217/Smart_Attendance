@@ -5,7 +5,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app.core.database import Base, get_db
+from app.core.roles import RoleName
 from app.main import create_app
+from app.models.role import Role
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
@@ -21,6 +23,11 @@ def db_session():
     testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
     Base.metadata.create_all(bind=engine)
     session = testing_session_local()
+    # `create_all` builds schema only — it does not run the Alembic
+    # migration's data seed, so the 3 fixed system roles are seeded here
+    # instead, once per test, for every test that needs a role-bearing user.
+    session.add_all(Role(name=role.value) for role in RoleName)
+    session.commit()
     try:
         yield session
     finally:

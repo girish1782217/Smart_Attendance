@@ -9,7 +9,7 @@ the last full regression run.
 | REQ-FOUND-002 | Frontend boots, reaches backend health check | SPEC-01 | `frontend/src/App.tsx`, `frontend/src/components/HealthStatus.tsx` | `frontend/src/components/__tests__/HealthStatus.test.tsx` | PASS (2/2) |
 | REQ-AUTH-001 | Login issues JWT | SPEC-02 | `app/services/auth_service.py`, `POST /api/v1/auth/login` | `test_auth.py` | PASS (14/14) |
 | REQ-AUTH-002 | Protected routes reject missing/invalid/expired/revoked tokens | SPEC-02 | `app/api/deps.py::get_current_user` | `test_auth.py` | PASS (14/14) |
-| REQ-RBAC-001 | Role-gated endpoints enforce permissions server-side | SPEC-03 | `require_role` dependency | `test_rbac.py` | PENDING |
+| REQ-RBAC-001 | Role-gated endpoints enforce permissions server-side | SPEC-03 | `app/api/deps.py::require_role`, `app/api/v1/users.py` | `test_rbac.py` | PASS (23/23) |
 | REQ-MASTER-001 | Master data CRUD + validation + pagination | SPEC-04 | `departments/programs/academic_years/semesters/classes/sections/subjects` routers | `test_master_data.py` | PENDING |
 | REQ-STUDENT-001 | Student CRUD, dedup, search/filter/pagination | SPEC-05 | `StudentService` | `test_students.py` | PENDING |
 | REQ-FACULTY-001 | Faculty CRUD + assignments | SPEC-06 | `FacultyService`, `FacultyAssignment` | `test_faculty.py` | PENDING |

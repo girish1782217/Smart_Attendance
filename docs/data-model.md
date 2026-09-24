@@ -19,6 +19,8 @@
 |---|---|---|
 | `users` | SPEC-02 | Identity + credentials only. Role assignment lands in SPEC-03 (`roles`/`user_roles`) as a separate concern. |
 | `revoked_tokens` | SPEC-02 | Logout support for otherwise-stateless JWTs (Assumption A-2-1). Keyed by JWT `jti`; opportunistically pruned of expired rows on each write. |
+| `roles` | SPEC-03 | 3 fixed rows seeded by migration: `ADMIN`, `FACULTY`, `STUDENT` (`app/core/roles.py::RoleName`). No separate `permissions` table — see the simplification note in `03-rbac-spec.md`. |
+| `user_roles` | SPEC-03 | Many-to-many join, composite PK `(user_id, role_id)`, `ON DELETE CASCADE` both sides. A user may hold more than one role. |
 
 ## `users`
 
@@ -39,3 +41,18 @@
 | jti | string(64) | PK — the revoked token's JWT ID |
 | revoked_at | datetime | server default now |
 | expires_at | datetime | not null, indexed — the token's original expiry, used to prune stale rows |
+
+## `roles`
+
+| Column | Type | Constraints |
+|---|---|---|
+| id | integer | PK, autoincrement |
+| name | string(50) | unique, indexed, not null — `ADMIN` \| `FACULTY` \| `STUDENT` |
+| description | string(255) | nullable |
+
+## `user_roles`
+
+| Column | Type | Constraints |
+|---|---|---|
+| user_id | integer | PK (composite), FK → `users.id`, `ON DELETE CASCADE` |
+| role_id | integer | PK (composite), FK → `roles.id`, `ON DELETE CASCADE` |

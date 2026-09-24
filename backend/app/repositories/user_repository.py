@@ -29,3 +29,10 @@ def create(
     db.commit()
     db.refresh(user)
     return user
+
+
+def list_users(db: Session, *, page: int, page_size: int) -> tuple[list[User], int]:
+    query = db.query(User).order_by(User.id)
+    total = query.count()
+    items = query.offset((page - 1) * page_size).limit(page_size).all()
+    return items, total

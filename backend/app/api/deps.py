@@ -3,7 +3,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.exceptions import UnauthorizedError
+from app.core.exceptions import ForbiddenError, UnauthorizedError
+from app.core.roles import RoleName
 from app.core.security import decode_access_token
 from app.models.user import User
 from app.repositories import token_repository, user_repository
@@ -33,3 +34,23 @@ def get_current_user(
         raise UnauthorizedError("User not found or inactive.", code="INVALID_TOKEN")
 
     return user
+
+
+def require_role(*allowed_roles: RoleName):
+    """Dependency factory gating an endpoint to one or more roles.
+
+    Roles are read from the DB-backed `current_user.roles` relationship
+    (not a JWT claim), so a role change takes effect on the very next
+    request rather than requiring re-login.
+    """
+    allowed_names = {role.value for role in allowed_roles}
+
+    def _dependency(current_user: User = Depends(get_current_user)) -> User:
+        user_role_names = {role.name for role in current_user.roles}
+        if not user_role_names & allowed_names:
+            raise ForbiddenError(
+                "You do not have permission to perform this action.", code="FORBIDDEN"
+            )
+        return current_user
+
+    return _dependency
