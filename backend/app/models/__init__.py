@@ -6,6 +6,7 @@ from app.models.revoked_token import RevokedToken
 from app.models.role import Role, user_roles
 from app.models.section import Section
 from app.models.semester import Semester
+from app.models.student import Student
 from app.models.subject import Subject
 from app.models.user import User
 
@@ -21,4 +22,5 @@ __all__ = [
     "AcademicClass",
     "Section",
     "Subject",
+    "Student",
 ]

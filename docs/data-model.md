@@ -79,3 +79,4 @@ what's listed below.
 | `classes` | name, program_id | unique(program_id, name), FK program_id → programs.id |
 | `sections` | name, class_id, capacity (nullable) | unique(class_id, name), FK class_id → classes.id |
 | `subjects` | name, code, department_id, credits (nullable) | unique(code), FK department_id → departments.id |
+| `students` | user_id, roll_number, section_id, phone (nullable) | unique(user_id), unique(roll_number), FK user_id → users.id, FK section_id → sections.id |

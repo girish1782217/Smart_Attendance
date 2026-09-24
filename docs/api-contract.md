@@ -51,3 +51,13 @@ field — see `04-master-data-spec.md`).
 
 Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<parent_filter>=`,
 `GET {base}/{id}`, `PATCH {base}/{id}`, `DELETE {base}/{id}`.
+
+**Students (SPEC-05)**
+
+| Method | Path | Auth |
+|---|---|---|
+| POST | `/api/v1/students` | ADMIN — creates the backing `User` (STUDENT role) + `Student` profile atomically |
+| GET | `/api/v1/students?page=&page_size=&search=&section_id=` | ADMIN, FACULTY |
+| GET | `/api/v1/students/{id}` | ADMIN, FACULTY |
+| PATCH | `/api/v1/students/{id}` | ADMIN |
+| DELETE | `/api/v1/students/{id}` | ADMIN — soft delete; also disables the student's login |
