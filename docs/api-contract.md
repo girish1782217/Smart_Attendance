@@ -61,3 +61,22 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 | GET | `/api/v1/students/{id}` | ADMIN, FACULTY |
 | PATCH | `/api/v1/students/{id}` | ADMIN |
 | DELETE | `/api/v1/students/{id}` | ADMIN — soft delete; also disables the student's login |
+
+**Faculty (SPEC-06)** — identical shape to Students.
+
+| Method | Path | Auth |
+|---|---|---|
+| POST | `/api/v1/faculty` | ADMIN |
+| GET | `/api/v1/faculty?page=&page_size=&search=&department_id=` | ADMIN, FACULTY |
+| GET | `/api/v1/faculty/{id}` | ADMIN, FACULTY |
+| PATCH | `/api/v1/faculty/{id}` | ADMIN |
+| DELETE | `/api/v1/faculty/{id}` | ADMIN — soft delete; also disables login |
+
+**Faculty Assignments (SPEC-06)**
+
+| Method | Path | Auth |
+|---|---|---|
+| POST | `/api/v1/faculty-assignments` | ADMIN |
+| GET | `/api/v1/faculty-assignments?page=&page_size=&faculty_id=&subject_id=&section_id=&semester_id=` | ADMIN, FACULTY — **a FACULTY caller's `faculty_id` is always overridden server-side to their own**, never taken from the query string |
+| GET | `/api/v1/faculty-assignments/{id}` | ADMIN, FACULTY |
+| DELETE | `/api/v1/faculty-assignments/{id}` | ADMIN — soft delete (deactivating and later recreating the identical combination is allowed; uniqueness is enforced only among active rows) |

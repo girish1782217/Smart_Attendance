@@ -1,6 +1,8 @@
 from app.models.academic_class import AcademicClass
 from app.models.academic_year import AcademicYear
 from app.models.department import Department
+from app.models.faculty import Faculty
+from app.models.faculty_assignment import FacultyAssignment
 from app.models.program import Program
 from app.models.revoked_token import RevokedToken
 from app.models.role import Role, user_roles
@@ -23,4 +25,6 @@ __all__ = [
     "Section",
     "Subject",
     "Student",
+    "Faculty",
+    "FacultyAssignment",
 ]

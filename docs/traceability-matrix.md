@@ -12,7 +12,7 @@ the last full regression run.
 | REQ-RBAC-001 | Role-gated endpoints enforce permissions server-side | SPEC-03 | `app/api/deps.py::require_role`, `app/api/v1/users.py` | `test_rbac.py` | PASS (23/23) |
 | REQ-MASTER-001 | Master data CRUD + validation + pagination | SPEC-04 | `app/api/v1/master_data/*` (7 routers), `app/repositories/crud_base.py` | `test_master_data.py` | PASS (48/48) |
 | REQ-STUDENT-001 | Student CRUD, dedup, search/filter/pagination | SPEC-05 | `app/services/student_service.py` | `test_students.py` | PASS (59/59) |
-| REQ-FACULTY-001 | Faculty CRUD + assignments | SPEC-06 | `FacultyService`, `FacultyAssignment` | `test_faculty.py` | PENDING |
+| REQ-FACULTY-001 | Faculty CRUD + assignments | SPEC-06 | `app/services/faculty_service.py`, `app/services/faculty_assignment_service.py` | `test_faculty.py` | PASS (71/71) |
 | REQ-SESSION-001 | Attendance session creation & validation | SPEC-07 | `AttendanceSessionService` | `test_attendance_sessions.py` | PENDING |
 | REQ-ATT-001 | Attendance recording (all statuses, bulk, submit) | SPEC-08 | `AttendanceService` | `test_attendance_recording.py` | PENDING |
 | REQ-ATT-002 | Attendance % computed per documented formula | SPEC-08/11 | `attendance_calculations.py` | `test_attendance_calculations.py` | PENDING |

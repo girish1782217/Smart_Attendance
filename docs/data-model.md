@@ -80,3 +80,5 @@ what's listed below.
 | `sections` | name, class_id, capacity (nullable) | unique(class_id, name), FK class_id → classes.id |
 | `subjects` | name, code, department_id, credits (nullable) | unique(code), FK department_id → departments.id |
 | `students` | user_id, roll_number, section_id, phone (nullable) | unique(user_id), unique(roll_number), FK user_id → users.id, FK section_id → sections.id |
+| `faculty` | user_id, employee_id, department_id, phone (nullable) | unique(user_id), unique(employee_id), FK user_id → users.id, FK department_id → departments.id |
+| `faculty_assignments` | faculty_id, subject_id, section_id, semester_id | **partial** unique index on all 4 `WHERE is_active` (not a blanket constraint — see `06-faculty-management-spec.md` Defects), FKs to faculty/subjects/sections/semesters |
