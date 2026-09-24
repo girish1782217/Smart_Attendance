@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import NotFoundError, ValidationAppError
+from app.core.exceptions import ForbiddenError, NotFoundError, ValidationAppError
 from app.core.roles import RoleName
 from app.models.user import User
 from app.repositories import faculty_repository, student_repository
@@ -52,3 +52,23 @@ def resolve_faculty_for_write(
             raise ValidationAppError("faculty_id is required.", code="FACULTY_ID_REQUIRED")
         return requested_faculty_id
     return _resolve_own_faculty_id(db, current_user)
+
+
+def resolve_student_access_scope(db: Session, current_user: User, student_id: int) -> int | None:
+    """For endpoints that read one student's data (attendance summary/
+    history, AI insight): returns the faculty_id to scope records by, or
+    None for "no restriction" (ADMIN, or STUDENT viewing their own — a
+    student sees all their own subjects, not just one faculty's). Raises
+    403 for a STUDENT requesting someone else's data, or any other role
+    with no valid access path."""
+    roles = {role.name for role in current_user.roles}
+    if RoleName.ADMIN.value in roles:
+        return None
+    if RoleName.STUDENT.value in roles:
+        own_student_id = resolve_own_student_id(db, current_user)
+        if own_student_id != student_id:
+            raise ForbiddenError("You can only view your own data.", code="FORBIDDEN")
+        return None
+    if RoleName.FACULTY.value in roles:
+        return resolve_faculty_filter(db, current_user, None)
+    raise ForbiddenError("You do not have permission to perform this action.", code="FORBIDDEN")

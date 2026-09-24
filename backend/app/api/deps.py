@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
@@ -8,6 +10,7 @@ from app.core.roles import RoleName
 from app.core.security import decode_access_token
 from app.models.user import User
 from app.repositories import token_repository, user_repository
+from app.services import gemini_client
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -34,6 +37,13 @@ def get_current_user(
         raise UnauthorizedError("User not found or inactive.", code="INVALID_TOKEN")
 
     return user
+
+
+def get_gemini_generate_fn() -> Callable[[str], str]:
+    """Returns the function used to call Gemini. Tests override this via
+    `app.dependency_overrides[get_gemini_generate_fn] = lambda: fake_fn` so
+    no automated test ever needs network access or a real API key."""
+    return gemini_client.generate_content
 
 
 def require_role(*allowed_roles: RoleName):

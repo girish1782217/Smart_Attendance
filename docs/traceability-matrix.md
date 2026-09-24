@@ -22,7 +22,7 @@ the last full regression run.
 | REQ-REPORT-001 | Student/subject/low-attendance/faculty reports + export | SPEC-12 | `app/services/report_service.py`, `app/services/csv_export.py` | `test_reports.py` | PASS (136/136) |
 | REQ-NOTIF-001 | In-app notifications for key events | SPEC-13 | `app/services/notification_service.py` | `test_notifications.py` | PASS (143/143) |
 | REQ-DASH-001 | Role-scoped dashboards, server-enforced | SPEC-14 | `app/services/dashboard_service.py` | `test_dashboards.py` | PASS (149/149) |
-| REQ-AI-001 | Gemini insight, backend-only, mocked in tests, graceful failure | SPEC-15 | `GeminiInsightService` | `test_ai_insights.py` | PENDING |
+| REQ-AI-001 | Gemini insight, backend-only, mocked in tests, graceful failure | SPEC-15 | `app/services/ai_insight_service.py`, `app/services/gemini_client.py` | `test_ai_insights.py` | PASS (158/158) |
 | REQ-SEC-001 | Security hardening pass | SPEC-16 | various | `test_security.py` | PENDING |
 | REQ-UX-001 | UI/UX polish pass | SPEC-17 | frontend | manual + `frontend` tests | PENDING |
 | REQ-E2E-001 | Full workflows 1–6 pass end-to-end | SPEC-18 | Playwright | `e2e/*.spec.ts` | PENDING |

@@ -171,3 +171,16 @@ always the caller's own data, never a specified target.
 | GET | `/api/v1/dashboard/admin` | ADMIN only |
 | GET | `/api/v1/dashboard/faculty` | FACULTY only |
 | GET | `/api/v1/dashboard/student` | STUDENT only |
+
+**AI Insights (SPEC-15)** — backend-only Gemini integration; same scoping as
+SPEC 10's attendance-summary endpoint. Always returns `200` with the
+deterministic `overall`/`by_subject` data; `ai_available`/`insight_text`/
+`ai_error_code` report the advisory narrative's outcome separately — a
+Gemini failure never fails the request.
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/students/{id}/ai-insight` | ADMIN, FACULTY (own sessions), STUDENT (own only) |
+
+`ai_error_code` values: `MISSING_API_KEY`, `TIMEOUT`, `PROVIDER_ERROR`,
+`INVALID_RESPONSE`, or `null` on success.
