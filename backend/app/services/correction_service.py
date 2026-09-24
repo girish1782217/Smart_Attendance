@@ -9,7 +9,7 @@ from app.models.audit_log import AuditAction
 from app.models.correction_request import CorrectionRequest, CorrectionRequestStatus
 from app.models.user import User
 from app.repositories import attendance_record_repository, correction_repository
-from app.services import audit_service, scoping
+from app.services import audit_service, notification_service, scoping
 
 
 def _role_names(user: User) -> set[str]:
@@ -107,6 +107,9 @@ def request_correction(
         after_value=requested_status.value,
         reason=reason,
     )
+    notification_service.notify_correction_requested(
+        db, correction=correction, session=session, requester_user_id=current_user.id
+    )
     return correction_repository.get_by_id(db, correction.id)
 
 
@@ -188,6 +191,7 @@ def approve_correction(
         after_value=correction.requested_status.value,
         reason=decision_reason,
     )
+    notification_service.notify_correction_decided(db, correction=correction, approved=True)
     return get_correction(db, correction_id)
 
 
@@ -219,4 +223,5 @@ def reject_correction(
         after_value=correction.original_status.value,
         reason=decision_reason,
     )
+    notification_service.notify_correction_decided(db, correction=correction, approved=False)
     return get_correction(db, correction_id)

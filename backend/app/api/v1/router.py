@@ -8,6 +8,7 @@ from app.api.v1.corrections import router as corrections_router
 from app.api.v1.faculty import router as faculty_router
 from app.api.v1.faculty_assignments import router as faculty_assignments_router
 from app.api.v1.master_data import master_data_router
+from app.api.v1.notifications import router as notifications_router
 from app.api.v1.reports import router as reports_router
 from app.api.v1.settings import router as settings_router
 from app.api.v1.students import router as students_router
@@ -28,3 +29,4 @@ api_v1_router.include_router(corrections_router)
 api_v1_router.include_router(attendance_history_router)
 api_v1_router.include_router(settings_router)
 api_v1_router.include_router(reports_router)
+api_v1_router.include_router(notifications_router)

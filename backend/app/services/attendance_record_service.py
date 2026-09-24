@@ -4,7 +4,7 @@ from app.core.exceptions import ConflictError, NotFoundError
 from app.models.attendance_record import AttendanceRecord, AttendanceStatus
 from app.models.attendance_session import AttendanceSession, AttendanceSessionStatus
 from app.repositories import attendance_record_repository, student_repository
-from app.services import attendance_session_service
+from app.services import attendance_session_service, notification_service
 
 
 def bulk_mark(
@@ -82,4 +82,7 @@ def submit_session(db: Session, session_id: int) -> AttendanceSession:
     session.status = AttendanceSessionStatus.SUBMITTED
     db.commit()
     db.refresh(session)
+
+    notification_service.check_and_notify_low_attendance(db, [student.id for student in roster])
+
     return session

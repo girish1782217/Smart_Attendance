@@ -145,3 +145,20 @@ just below-threshold ones.
 (not `faculty-activity`, a single summary object rather than a list) return
 `text/csv` with **every** matching row, ignoring pagination entirely — that
 is the point of an export.
+
+**Notifications (SPEC-13)** — in-app only; every endpoint operates on the
+caller's own notifications regardless of role.
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/notifications?page=&page_size=&is_read=` | any authenticated user |
+| GET | `/api/v1/notifications/unread-count` | any authenticated user |
+| POST | `/api/v1/notifications/{id}/read` | owner only — `404` (not `403`) for another user's id |
+| POST | `/api/v1/notifications/mark-all-read` | any authenticated user |
+
+Notifications are created as side effects of existing actions, not via a
+dedicated creation endpoint: `POST /attendance-records/{id}/corrections`
+(notifies the owning faculty, unless self-requested), `.../approve` /
+`.../reject` (notifies the original requester), and
+`POST /attendance-sessions/{id}/submit` (notifies any newly-below-threshold
+student in the roster, deduplicated against an existing unread warning).

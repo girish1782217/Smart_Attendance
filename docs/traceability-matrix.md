@@ -20,7 +20,7 @@ the last full regression run.
 | REQ-HIST-001 | Attendance history filtering | SPEC-10 | `app/services/attendance_history_service.py` | `test_attendance_history.py` | PASS (119/119) |
 | REQ-LOW-001 | Low-attendance detection vs configurable threshold | SPEC-11 | `app/services/low_attendance_service.py`, `app/services/settings_service.py` | `test_low_attendance.py` | PASS (129/129) |
 | REQ-REPORT-001 | Student/subject/low-attendance/faculty reports + export | SPEC-12 | `app/services/report_service.py`, `app/services/csv_export.py` | `test_reports.py` | PASS (136/136) |
-| REQ-NOTIF-001 | In-app notifications for key events | SPEC-13 | `NotificationService` | `test_notifications.py` | PENDING |
+| REQ-NOTIF-001 | In-app notifications for key events | SPEC-13 | `app/services/notification_service.py` | `test_notifications.py` | PASS (143/143) |
 | REQ-DASH-001 | Role-scoped dashboards, server-enforced | SPEC-14 | `DashboardService` | `test_dashboards.py` | PENDING |
 | REQ-AI-001 | Gemini insight, backend-only, mocked in tests, graceful failure | SPEC-15 | `GeminiInsightService` | `test_ai_insights.py` | PENDING |
 | REQ-SEC-001 | Security hardening pass | SPEC-16 | various | `test_security.py` | PENDING |
