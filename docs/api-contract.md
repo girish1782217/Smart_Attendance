@@ -89,3 +89,6 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 | GET | `/api/v1/attendance-sessions?page=&page_size=&faculty_id=&section_id=&subject_id=&from_date=&to_date=` | ADMIN, FACULTY — FACULTY is always scoped to their own sessions |
 | GET | `/api/v1/attendance-sessions/{id}` | ADMIN, FACULTY (own only) |
 | GET | `/api/v1/attendance-sessions/{id}/roster` | ADMIN, FACULTY (own only) — active students currently in the session's section |
+| PUT | `/api/v1/attendance-sessions/{id}/records` | ADMIN, FACULTY (own only) — bulk upsert; `409` if the session is already `SUBMITTED` |
+| GET | `/api/v1/attendance-sessions/{id}/records` | ADMIN, FACULTY (own only) — current marks, joined with student name/roll number |
+| POST | `/api/v1/attendance-sessions/{id}/submit` | ADMIN, FACULTY (own only) — one-way `SCHEDULED → SUBMITTED`; `409` if the roster isn't fully marked or already submitted |
