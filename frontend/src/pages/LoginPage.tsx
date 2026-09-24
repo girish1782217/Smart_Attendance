@@ -1,9 +1,10 @@
-import { GraduationCap, Lock, Mail, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react'
+import { Eye, EyeOff, GraduationCap, Lock, Mail, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { ApiError } from '../api/client'
 import { useAuth } from '../contexts/AuthContext'
+import { useToast } from '../contexts/ToastContext'
 
 const HIGHLIGHTS = [
   { icon: ShieldCheck, text: 'Role-based access for admins, faculty, and students' },
@@ -13,8 +14,10 @@ const HIGHLIGHTS = [
 
 export function LoginPage() {
   const { login, isAuthenticated, isLoading: isSessionLoading } = useAuth()
+  const { showToast } = useToast()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -39,6 +42,14 @@ export function LoginPage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  function handleForgotPassword() {
+    // There is no self-service password reset flow (by design — see
+    // docs/sdd/00-product-spec.md's out-of-scope list: no email/SMS
+    // delivery in v1). Point people to the one real path instead of a
+    // dead-end link or a form that can't actually do anything.
+    showToast('Password resets are handled by your administrator. Please contact them directly.', 'info')
   }
 
   return (
@@ -121,21 +132,43 @@ export function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">
-                Password
-              </label>
+              <div className="mb-1.5 flex items-center justify-between">
+                <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline"
+                >
+                  Forgot password?
+                </button>
+              </div>
               <div className="relative">
                 <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   id="password"
-                  type="password"
+                  type={isPasswordVisible ? 'text' : 'password'}
                   autoComplete="current-password"
                   required
                   placeholder="••••••••"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                  className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
+                  className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
                 />
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordVisible((visible) => !visible)}
+                  aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+                  aria-pressed={isPasswordVisible}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                >
+                  {isPasswordVisible ? (
+                    <EyeOff className="h-4 w-4" strokeWidth={2} />
+                  ) : (
+                    <Eye className="h-4 w-4" strokeWidth={2} />
+                  )}
+                </button>
               </div>
             </div>
 
