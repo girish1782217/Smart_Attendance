@@ -5,8 +5,8 @@ the last full regression run.
 
 | Req ID | Description | Spec | Implementation | Tests | Result |
 |---|---|---|---|---|---|
-| REQ-FOUND-001 | Backend boots, `/health` works | SPEC-01 | `backend/app/main.py`, `backend/app/api/health.py` | `backend/tests/test_health.py` | PENDING |
-| REQ-FOUND-002 | Frontend boots | SPEC-01 | `frontend/` (Vite app) | `frontend/tests/*` | PENDING |
+| REQ-FOUND-001 | Backend boots, `/health` works | SPEC-01 | `backend/app/main.py`, `backend/app/api/health.py` | `backend/tests/test_health.py`, `backend/tests/test_error_handling.py` | PASS (4/4) |
+| REQ-FOUND-002 | Frontend boots, reaches backend health check | SPEC-01 | `frontend/src/App.tsx`, `frontend/src/components/HealthStatus.tsx` | `frontend/src/components/__tests__/HealthStatus.test.tsx` | PASS (2/2) |
 | REQ-AUTH-001 | Login issues JWT | SPEC-02 | `AuthService`, `POST /auth/login` | `test_auth.py` | PENDING |
 | REQ-AUTH-002 | Protected routes reject missing/invalid/expired tokens | SPEC-02 | `get_current_user` dependency | `test_auth.py` | PENDING |
 | REQ-RBAC-001 | Role-gated endpoints enforce permissions server-side | SPEC-03 | `require_role` dependency | `test_rbac.py` | PENDING |

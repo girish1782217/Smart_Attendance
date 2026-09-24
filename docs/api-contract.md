@@ -6,9 +6,11 @@
 
 ## Conventions
 
-- Base path: `/api/v1`.
+- Base path: `/api/v1` for all domain resources. `GET /health` is
+  intentionally unversioned and unauthenticated (standard convention for
+  infra/load-balancer health probes).
 - Auth: `Authorization: Bearer <jwt>` header on all endpoints except
-  `POST /api/v1/auth/login` and `GET /api/v1/health`.
+  `POST /api/v1/auth/login` and `GET /health`.
 - Pagination: `?page=1&page_size=25` (max `page_size=100`), response envelope:
   ```json
   { "items": [...], "total": 123, "page": 1, "page_size": 25 }
@@ -22,4 +24,4 @@
 
 | Method | Path | Spec | Auth |
 |---|---|---|---|
-| GET | `/api/v1/health` | SPEC-01 | none |
+| GET | `/health` | SPEC-01 | none |
