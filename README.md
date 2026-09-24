@@ -6,21 +6,21 @@ A full-stack attendance management system for a college (~5,000 students,
 [`docs/traceability-matrix.md`](docs/traceability-matrix.md) for requirement
 → test mapping.
 
-**Status**: under active development. All backend specifications (SPEC
-00–16) are complete — 170/170 backend tests passing. The frontend covers
-every role's full workflow (master data management, students/faculty,
-attendance session creation and marking, corrections, reports with CSV
-export, settings, notifications, and the student attendance/AI-insight
-views), but has not yet been through the SPEC 17 UX-polish pass or SPEC 18
-Playwright E2E suite; see the traceability matrix for current progress
-across all 18 specifications.
+**Status**: under active development. Backend specifications SPEC 00–14 and
+16 are complete — 161/161 backend tests passing (SPEC 15's Gemini AI
+integration was implemented, accepted, and later removed at the user's
+request; see `docs/sdd/15-ai-spec.md`). The frontend covers every role's
+full workflow (master data management, students/faculty, attendance session
+creation and marking, corrections, reports with CSV export, settings, and
+notifications), but has not yet been through the SPEC 17 UX-polish pass or
+SPEC 18 Playwright E2E suite; see the traceability matrix for current
+progress across all 18 specifications.
 
 ## Architecture
 
 See [`docs/architecture.md`](docs/architecture.md) for the full picture.
 Summary: React (TypeScript) frontend talks to a layered FastAPI backend
-(Router → Service → Repository → SQLAlchemy) over a JSON REST API; Google
-Gemini is called server-side only for advisory AI insights.
+(Router → Service → Repository → SQLAlchemy) over a JSON REST API.
 
 ## Technology Stack
 
@@ -32,8 +32,6 @@ TanStack Query, Vitest + React Testing Library.
 
 **Database**: SQLite for dev/test, PostgreSQL-compatible for production
 (see Assumption A-1 in [`docs/sdd/00-product-spec.md`](docs/sdd/00-product-spec.md)).
-
-**AI**: Google Gemini, backend-only integration (SPEC 15).
 
 ## Prerequisites
 
@@ -60,9 +58,6 @@ cp .env.example .env           # then fill in JWT_SECRET at minimum
 | `JWT_SECRET` | JWT signing secret — set a real random value | _(none — must be set)_ |
 | `JWT_ALGORITHM` | JWT algorithm | `HS256` |
 | `JWT_EXPIRE_MINUTES` | Access token lifetime | `60` |
-| `GEMINI_API_KEY` | Google Gemini key (never committed) | _(empty — AI insights degrade gracefully)_ |
-| `GEMINI_MODEL` | Gemini model name | `gemini-1.5-flash` |
-| `GEMINI_TIMEOUT_SECONDS` | Timeout for Gemini calls | `10` |
 | `CORS_ORIGINS` | Comma-separated allowed origins | `http://localhost:5173` |
 | `LOW_ATTENDANCE_DEFAULT_THRESHOLD` | Default low-attendance % threshold | `75.0` |
 | `LOG_LEVEL` | Logging level | `INFO` |

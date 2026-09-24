@@ -29,9 +29,8 @@ production with the insecure default JWT secret.
 - **API error leakage**: the global exception handler (SPEC 01) converts
   any unhandled exception to a generic `500` envelope; verified no stack
   trace or internal detail leaks (`test_error_handling.py`).
-- **Secret handling**: `GEMINI_API_KEY`/`JWT_SECRET`/`DATABASE_URL` are
-  `.env`-only, gitignored, never referenced in any Pydantic response
-  schema, and the Gemini client (SPEC 15) never echoes the key back.
+- **Secret handling**: `JWT_SECRET`/`DATABASE_URL` are `.env`-only,
+  gitignored, and never referenced in any Pydantic response schema.
 - **CSRF**: not applicable to this API's auth model — bearer tokens must be
   explicitly attached by client JavaScript (no ambient cookie credential a
   browser would auto-attach cross-site), which is the standard mitigation

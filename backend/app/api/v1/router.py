@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-from app.api.v1.ai_insights import router as ai_insights_router
 from app.api.v1.attendance_history import router as attendance_history_router
 from app.api.v1.attendance_records import router as attendance_records_router
 from app.api.v1.attendance_sessions import router as attendance_sessions_router
@@ -33,4 +32,3 @@ api_v1_router.include_router(settings_router)
 api_v1_router.include_router(reports_router)
 api_v1_router.include_router(notifications_router)
 api_v1_router.include_router(dashboard_router)
-api_v1_router.include_router(ai_insights_router)

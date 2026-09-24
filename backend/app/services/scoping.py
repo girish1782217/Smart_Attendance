@@ -56,7 +56,7 @@ def resolve_faculty_for_write(
 
 def resolve_student_access_scope(db: Session, current_user: User, student_id: int) -> int | None:
     """For endpoints that read one student's data (attendance summary/
-    history, AI insight): returns the faculty_id to scope records by, or
+    history): returns the faculty_id to scope records by, or
     None for "no restriction" (ADMIN, or STUDENT viewing their own — a
     student sees all their own subjects, not just one faculty's). Raises
     403 for a STUDENT requesting someone else's data, or any other role

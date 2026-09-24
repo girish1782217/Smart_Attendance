@@ -25,7 +25,6 @@ import { FacultySessionDetailPage } from './pages/faculty/FacultySessionDetailPa
 import { FacultySessionsPage } from './pages/faculty/FacultySessionsPage'
 import { HomeRedirect } from './pages/HomeRedirect'
 import { LoginPage } from './pages/LoginPage'
-import { StudentAIInsightPage } from './pages/student/StudentAIInsightPage'
 import { StudentDashboardPage } from './pages/student/StudentDashboardPage'
 import { StudentMyAttendancePage } from './pages/student/StudentMyAttendancePage'
 import { StudentMyCorrectionsPage } from './pages/student/StudentMyCorrectionsPage'
@@ -81,7 +80,6 @@ function App() {
                   <Route path="/student" element={<StudentDashboardPage />} />
                   <Route path="/student/attendance" element={<StudentMyAttendancePage />} />
                   <Route path="/student/corrections" element={<StudentMyCorrectionsPage />} />
-                  <Route path="/student/ai-insight" element={<StudentAIInsightPage />} />
                 </Route>
               </Route>
 

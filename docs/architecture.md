@@ -18,11 +18,6 @@
                     │  SQLite (dev/test) /   │
                     │  PostgreSQL (prod)     │
                     └───────────────────────┘
-
-                    ┌───────────────────────┐
-                    │  Google Gemini API     │
-                    │  (server-side only)    │
-                    └───────────────────────┘
 ```
 
 ## Backend layering
@@ -107,16 +102,6 @@ validation failures (`422`) use the same envelope with `code:
 "VALIDATION_ERROR"` and an additional `error.details` array carrying
 FastAPI's normal per-field error list (`loc`/`msg`/`type`), so the frontend
 can still show field-specific messages.
-
-## AI integration
-
-Gemini is called only from `services/gemini_insight_service.py`, which:
-1. Pulls the `GEMINI_API_KEY` from environment (never hardcoded, never
-   returned to the client).
-2. Builds a prompt from **already-computed** structured attendance data.
-3. Applies a timeout and catches provider errors, returning an advisory
-   "insight unavailable" response rather than failing the request.
-4. Is fully mockable in tests (the HTTP client is injected).
 
 ## Testing strategy summary
 

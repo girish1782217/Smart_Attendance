@@ -3,6 +3,15 @@
 ## Status
 COMPLETE
 
+## Amendment (2026-09-25)
+
+The AI-insight capability described below (capability 8, FR-14, AC-6, and
+assumption A-8) was implemented and accepted as SPEC 15, then fully removed
+at the user's explicit request: the application is not using AI. The
+original requirements are left as-written below for an accurate historical
+record of what was scoped and built; see `docs/sdd/15-ai-spec.md` and
+`docs/traceability-matrix.md` (REQ-AI-001) for the removal record.
+
 ## 1. Product Scope
 
 Build a **Smart Attendance Management System** for a college with ~5,000 students,

@@ -22,8 +22,6 @@
 - **Auth in tests**: fixtures create users per role and return a valid bearer
   token via the real login endpoint (not a bypass), so authz is exercised
   honestly.
-- **External services**: Gemini is mocked via dependency override
-  (`app.dependency_overrides`) — no test depends on live network access.
 - **Naming**: `backend/tests/test_<spec_area>.py`, one file per spec.
 - **Coverage expectation**: every service branch (happy path + each declared
   edge case in the spec) has an assertion.

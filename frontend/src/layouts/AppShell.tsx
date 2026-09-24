@@ -11,7 +11,6 @@ import {
   LayoutDashboard,
   LogOut,
   Settings,
-  Sparkles,
   UserCog,
   Users,
   type LucideIcon,
@@ -55,7 +54,6 @@ const NAV_ITEMS: Record<RoleName, NavItem[]> = {
     { to: '/student', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/student/attendance', label: 'My Attendance', icon: CalendarCheck },
     { to: '/student/corrections', label: 'My Corrections', icon: FileEdit },
-    { to: '/student/ai-insight', label: 'AI Insight', icon: Sparkles },
   ],
 }
 

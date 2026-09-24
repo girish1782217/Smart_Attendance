@@ -22,10 +22,11 @@ the last full regression run.
 | REQ-REPORT-001 | Student/subject/low-attendance/faculty reports + export | SPEC-12 | `app/services/report_service.py`, `app/services/csv_export.py` | `test_reports.py` | PASS (136/136) |
 | REQ-NOTIF-001 | In-app notifications for key events | SPEC-13 | `app/services/notification_service.py` | `test_notifications.py` | PASS (143/143) |
 | REQ-DASH-001 | Role-scoped dashboards, server-enforced | SPEC-14 | `app/services/dashboard_service.py` | `test_dashboards.py` | PASS (149/149) |
-| REQ-AI-001 | Gemini insight, backend-only, mocked in tests, graceful failure | SPEC-15 | `app/services/ai_insight_service.py`, `app/services/gemini_client.py` | `test_ai_insights.py` | PASS (158/158) |
+| REQ-AI-001 | Gemini insight, backend-only, mocked in tests, graceful failure | SPEC-15 | *(removed 2026-09-25 — app not using AI; was PASS 158/158)* | ~~`test_ai_insights.py`~~ | REMOVED |
 | REQ-SEC-001 | Security hardening pass | SPEC-16 | `app/services/rate_limit_service.py`, `app/core/config.py::validate_production_settings` | `test_security.py` | PASS (166/166) |
 | REQ-UX-001 | UI/UX polish pass | SPEC-17 | frontend | manual + `frontend` tests | PENDING |
 | REQ-E2E-001 | Full workflows 1–6 pass end-to-end | SPEC-18 | Playwright | `e2e/*.spec.ts` | PENDING |
 
 Legend: PENDING (not yet implemented) → RUNNING (implemented, tests executing)
-→ PASS / FAIL.
+→ PASS / FAIL. REMOVED = implemented, tested, and accepted, then later
+deleted at the user's request (not a defect).

@@ -1,7 +1,17 @@
 # SPEC 15 — Gemini AI Insights
 
 ## Status
-COMPLETE
+REMOVED (2026-09-25) — implemented and accepted per the record below (9/9
+tests passing at the time), then fully removed at the user's explicit
+request because the application is not using AI. All code
+(`app/api/v1/ai_insights.py`, `app/schemas/ai_insight.py`,
+`app/services/ai_insight_service.py`, `app/services/gemini_client.py`,
+`get_gemini_generate_fn` in `app/api/deps.py`, the `gemini_*` settings in
+`app/core/config.py`, and `tests/test_ai_insights.py`) and the corresponding
+frontend page/route/nav item have been deleted. The rest of this document is
+kept as a historical record of what was built and verified, not a
+description of current behavior — see `docs/traceability-matrix.md` for the
+current status.
 
 ## Objective
 A backend-only Gemini integration that summarizes **already-computed**

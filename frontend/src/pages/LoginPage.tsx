@@ -1,4 +1,4 @@
-import { Eye, EyeOff, GraduationCap, Lock, Mail, ShieldCheck, Sparkles, TrendingUp } from 'lucide-react'
+import { Eye, EyeOff, FileEdit, GraduationCap, Lock, Mail, ShieldCheck, TrendingUp } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ import { useToast } from '../contexts/ToastContext'
 const HIGHLIGHTS = [
   { icon: ShieldCheck, text: 'Role-based access for admins, faculty, and students' },
   { icon: TrendingUp, text: 'Real-time attendance analytics and low-attendance alerts' },
-  { icon: Sparkles, text: 'AI-powered attendance insights, grounded in real data' },
+  { icon: FileEdit, text: 'Built-in correction workflow with full audit history' },
 ]
 
 export function LoginPage() {

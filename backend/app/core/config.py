@@ -17,10 +17,6 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60
 
-    gemini_api_key: str | None = None
-    gemini_model: str = "gemini-1.5-flash"
-    gemini_timeout_seconds: float = 10.0
-
     cors_origins: str = "http://localhost:5173"
 
     low_attendance_default_threshold: float = 75.0
