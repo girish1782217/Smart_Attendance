@@ -11,17 +11,6 @@ from app.services import user_service
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-def _to_response(user) -> UserWithRolesResponse:
-    return UserWithRolesResponse(
-        id=user.id,
-        email=user.email,
-        full_name=user.full_name,
-        is_active=user.is_active,
-        created_at=user.created_at,
-        roles=[role.name for role in user.roles],
-    )
-
-
 @router.post("", response_model=UserWithRolesResponse, status_code=201)
 def create_user(
     payload: CreateUserRequest,
@@ -35,7 +24,7 @@ def create_user(
         password=payload.password,
         role_names=payload.role_names,
     )
-    return _to_response(user)
+    return UserWithRolesResponse.from_model(user)
 
 
 @router.get("", response_model=Page[UserWithRolesResponse])
@@ -46,7 +35,7 @@ def list_users(
 ) -> Page[UserWithRolesResponse]:
     users, total = user_service.list_users(db, page=pagination.page, page_size=pagination.page_size)
     return Page(
-        items=[_to_response(user) for user in users],
+        items=[UserWithRolesResponse.from_model(user) for user in users],
         total=total,
         page=pagination.page,
         page_size=pagination.page_size,
@@ -61,4 +50,4 @@ def set_user_roles(
     _current_user=Depends(require_role(RoleName.ADMIN)),
 ) -> UserWithRolesResponse:
     user = user_service.set_user_roles(db, user_id=user_id, role_names=payload.role_names)
-    return _to_response(user)
+    return UserWithRolesResponse.from_model(user)

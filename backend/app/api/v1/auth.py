@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.core.security import decode_access_token
 from app.models.user import User
 from app.schemas.auth import LoginRequest, TokenResponse
-from app.schemas.user import UserResponse
+from app.schemas.user import UserWithRolesResponse
 from app.services import auth_service
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -19,9 +19,12 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> TokenResponse
     return TokenResponse(access_token=token)
 
 
-@router.get("/me", response_model=UserResponse)
-def read_current_user(current_user: User = Depends(get_current_user)) -> User:
-    return current_user
+@router.get("/me", response_model=UserWithRolesResponse)
+def read_current_user(current_user: User = Depends(get_current_user)) -> UserWithRolesResponse:
+    # Roles are included (unlike the plain UserResponse SPEC 02 originally
+    # shipped) so the frontend can route/render by role without a separate
+    # call — see docs/sdd/00-product-spec.md's frontend architecture note.
+    return UserWithRolesResponse.from_model(current_user)
 
 
 @router.post("/logout")

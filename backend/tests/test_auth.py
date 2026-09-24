@@ -103,6 +103,26 @@ def test_protected_endpoint_with_valid_token_returns_user_profile(client, db_ses
     assert body["full_name"] == "Test User"
     assert "password" not in body
     assert "hashed_password" not in body
+    assert body["roles"] == []  # this user has no roles assigned
+
+
+def test_current_user_profile_includes_roles(client, db_session):
+    from app.core.roles import RoleName
+    from app.services import user_service
+
+    user = user_service.create_user_with_roles(
+        db_session,
+        email="roled@example.com",
+        full_name="Roled User",
+        password=TEST_PASSWORD,
+        role_names=[RoleName.ADMIN, RoleName.FACULTY],
+    )
+    token = auth_service.issue_token_for_user(user)
+
+    response = client.get("/api/v1/auth/me", headers={"Authorization": f"Bearer {token}"})
+
+    assert response.status_code == 200
+    assert set(response.json()["roles"]) == {"ADMIN", "FACULTY"}
 
 
 def test_logout_revokes_token_so_it_can_no_longer_be_used(client, db_session):

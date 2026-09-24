@@ -1,8 +1,14 @@
+from __future__ import annotations
+
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.core.roles import RoleName
+
+if TYPE_CHECKING:
+    from app.models.user import User
 
 
 class UserResponse(BaseModel):
@@ -17,6 +23,17 @@ class UserResponse(BaseModel):
 
 class UserWithRolesResponse(UserResponse):
     roles: list[str]
+
+    @classmethod
+    def from_model(cls, user: "User") -> "UserWithRolesResponse":
+        return cls(
+            id=user.id,
+            email=user.email,
+            full_name=user.full_name,
+            is_active=user.is_active,
+            created_at=user.created_at,
+            roles=[role.name for role in user.roles],
+        )
 
 
 class CreateUserRequest(BaseModel):
