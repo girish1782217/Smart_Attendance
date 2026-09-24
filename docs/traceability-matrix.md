@@ -18,7 +18,7 @@ the last full regression run.
 | REQ-ATT-002 | Attendance % computed per documented formula | SPEC-08/11 | `app/services/attendance_calculations.py` | `test_attendance_calculations.py` | PASS (101/101) |
 | REQ-CORR-001 | Correction request/review/approve/reject + audit | SPEC-09 | `app/services/correction_service.py`, `app/services/audit_service.py` | `test_corrections.py` | PASS (111/111) |
 | REQ-HIST-001 | Attendance history filtering | SPEC-10 | `app/services/attendance_history_service.py` | `test_attendance_history.py` | PASS (119/119) |
-| REQ-LOW-001 | Low-attendance detection vs configurable threshold | SPEC-11 | `LowAttendanceService` | `test_low_attendance.py` | PENDING |
+| REQ-LOW-001 | Low-attendance detection vs configurable threshold | SPEC-11 | `app/services/low_attendance_service.py`, `app/services/settings_service.py` | `test_low_attendance.py` | PASS (129/129) |
 | REQ-REPORT-001 | Student/subject/low-attendance/faculty reports + export | SPEC-12 | `ReportService` | `test_reports.py` | PENDING |
 | REQ-NOTIF-001 | In-app notifications for key events | SPEC-13 | `NotificationService` | `test_notifications.py` | PENDING |
 | REQ-DASH-001 | Role-scoped dashboards, server-enforced | SPEC-14 | `DashboardService` | `test_dashboards.py` | PENDING |

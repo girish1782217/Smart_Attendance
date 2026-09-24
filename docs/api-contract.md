@@ -109,3 +109,22 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 |---|---|---|
 | GET | `/api/v1/students/{id}/attendance-summary` | ADMIN, FACULTY (own subject's records only), STUDENT (own only) — overall + per-subject percentage breakdown |
 | GET | `/api/v1/students/{id}/attendance-history?page=&page_size=&subject_id=&from_date=&to_date=` | same scoping — paginated detail rows, each showing correction outcome if any |
+
+**Settings (SPEC-11)**
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/settings/low-attendance-threshold` | any authenticated user |
+| PUT | `/api/v1/settings/low-attendance-threshold` | ADMIN only |
+
+**Low Attendance Reports (SPEC-11)**
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/reports/low-attendance/overall?page=&page_size=&department_id=&class_id=&section_id=&search=&threshold=` | ADMIN, FACULTY (unscoped — see design note in `11-low-attendance-spec.md` R4) |
+| GET | `/api/v1/reports/low-attendance/by-subject?...&subject_id=` | ADMIN, FACULTY |
+
+Both report endpoints return `{items, total, page, page_size, threshold}` —
+`threshold` echoes the effective value used (the per-request `?threshold=`
+override if given, otherwise the configured global setting) so the client
+always knows what was actually applied.

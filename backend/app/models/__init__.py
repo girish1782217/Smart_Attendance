@@ -14,6 +14,7 @@ from app.models.section import Section
 from app.models.semester import Semester
 from app.models.student import Student
 from app.models.subject import Subject
+from app.models.system_setting import SystemSetting
 from app.models.user import User
 
 __all__ = [
@@ -39,4 +40,5 @@ __all__ = [
     "CorrectionRequestStatus",
     "AuditLog",
     "AuditAction",
+    "SystemSetting",
 ]

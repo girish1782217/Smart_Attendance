@@ -1,5 +1,8 @@
 from app.models.attendance_record import AttendanceStatus
-from app.services.attendance_calculations import calculate_attendance_percentage
+from app.services.attendance_calculations import (
+    calculate_attendance_percentage,
+    calculate_percentage_from_counts,
+)
 
 PRESENT = AttendanceStatus.PRESENT
 ABSENT = AttendanceStatus.ABSENT
@@ -40,3 +43,9 @@ def test_empty_list_returns_none():
 def test_rounds_to_two_decimal_places():
     # 1 present out of 3 applicable -> 33.333...% -> 33.33
     assert calculate_attendance_percentage([PRESENT, ABSENT, ABSENT]) == 33.33
+
+
+def test_calculate_percentage_from_counts_matches_list_based_calculation():
+    assert calculate_percentage_from_counts(3, 4) == 75.0
+    assert calculate_percentage_from_counts(0, 0) is None
+    assert calculate_percentage_from_counts(1, 3) == 33.33
