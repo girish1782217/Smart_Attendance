@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.health import router as health_router
 from app.api.v1.router import api_v1_router
-from app.core.config import get_settings
+from app.core.config import get_settings, validate_production_settings
 from app.core.exceptions import AppError
 from app.core.logging_config import configure_logging
 
@@ -25,6 +25,7 @@ def _error_envelope(code: str, message: str, details: object = None) -> dict:
 def create_app() -> FastAPI:
     configure_logging()
     settings = get_settings()
+    validate_production_settings(settings)
 
     app = FastAPI(title=settings.app_name)
 
@@ -35,6 +36,14 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.middleware("http")
+    async def add_security_headers(request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        return response
 
     @app.exception_handler(AppError)
     async def handle_app_error(request: Request, exc: AppError) -> JSONResponse:

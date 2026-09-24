@@ -154,6 +154,10 @@ Tracked and updated per spec; see each `docs/sdd/NN-*.md` file's own
 "Defects Found" / acceptance sections, and the assumptions in
 `docs/sdd/00-product-spec.md` §6 (e.g., SQLite for dev/test, single global
 attendance threshold, in-app-only notifications, no refresh-token rotation).
+The login rate limiter (SPEC 16) is process-local in-memory state — correct
+for a single-process deployment, but a multi-worker production deployment
+would need a shared store (e.g. Redis) for the same guarantee across
+workers.
 
 ## Documentation Index
 

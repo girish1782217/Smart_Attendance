@@ -12,6 +12,18 @@ from app.models.role import Role
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
 
+@pytest.fixture(autouse=True)
+def _reset_rate_limiter():
+    """rate_limit_service (SPEC 16) keeps process-global in-memory state,
+    independent of the per-test DB — without this it would leak failed-
+    login counts across every test in the suite that touches /auth/login."""
+    from app.services import rate_limit_service
+
+    rate_limit_service.reset_all()
+    yield
+    rate_limit_service.reset_all()
+
+
 @pytest.fixture()
 def db_session():
     """A fresh, isolated in-memory SQLite DB for a single test."""

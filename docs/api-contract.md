@@ -25,7 +25,7 @@
 | Method | Path | Spec | Auth |
 |---|---|---|---|
 | GET | `/health` | SPEC-01 | none |
-| POST | `/api/v1/auth/login` | SPEC-02 | none — `{email, password}` → `{access_token, token_type}` |
+| POST | `/api/v1/auth/login` | SPEC-02 | none — `{email, password}` → `{access_token, token_type}`. Rate-limited (SPEC-16): 5 failed attempts per email / 15 min → `429 RATE_LIMITED`; a success resets the counter. |
 | GET | `/api/v1/auth/me` | SPEC-02 | bearer — returns the caller's own profile |
 | POST | `/api/v1/auth/logout` | SPEC-02 | bearer — revokes the presented token |
 | POST | `/api/v1/users` | SPEC-03 | bearer, ADMIN — create a user + assign role(s) |

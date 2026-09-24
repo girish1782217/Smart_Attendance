@@ -2,6 +2,8 @@ from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+INSECURE_DEFAULT_JWT_SECRET = "insecure-dev-secret-change-me"
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
@@ -11,7 +13,7 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite:///./dev.db"
 
-    jwt_secret: str = "insecure-dev-secret-change-me"
+    jwt_secret: str = INSECURE_DEFAULT_JWT_SECRET
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60
 
@@ -37,3 +39,12 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
+
+def validate_production_settings(settings: Settings) -> None:
+    """Fails fast at startup rather than silently running an insecure
+    deployment. Called from create_app() — see docs/sdd/16-security-spec.md."""
+    if settings.is_production and settings.jwt_secret == INSECURE_DEFAULT_JWT_SECRET:
+        raise RuntimeError(
+            "JWT_SECRET must be set to a secure, non-default value when ENVIRONMENT=production."
+        )

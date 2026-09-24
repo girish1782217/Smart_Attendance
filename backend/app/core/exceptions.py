@@ -42,3 +42,8 @@ class ForbiddenError(AppError):
 class ConflictError(AppError):
     status_code = 409
     code = "CONFLICT"
+
+
+class TooManyRequestsError(AppError):
+    status_code = 429
+    code = "TOO_MANY_REQUESTS"
