@@ -4,7 +4,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { ToastProvider } from './contexts/ToastContext'
 import { AppShell } from './layouts/AppShell'
+import { AcademicYearsPage } from './pages/admin/AcademicYearsPage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
+import { ClassesPage } from './pages/admin/ClassesPage'
+import { DepartmentsPage } from './pages/admin/DepartmentsPage'
+import { ProgramsPage } from './pages/admin/ProgramsPage'
+import { SectionsPage } from './pages/admin/SectionsPage'
+import { SemestersPage } from './pages/admin/SemestersPage'
+import { SubjectsPage } from './pages/admin/SubjectsPage'
 import { FacultyDashboardPage } from './pages/faculty/FacultyDashboardPage'
 import { HomeRedirect } from './pages/HomeRedirect'
 import { LoginPage } from './pages/LoginPage'
@@ -30,6 +37,13 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
                 <Route element={<AppShell role="ADMIN" />}>
                   <Route path="/admin" element={<AdminDashboardPage />} />
+                  <Route path="/admin/departments" element={<DepartmentsPage />} />
+                  <Route path="/admin/programs" element={<ProgramsPage />} />
+                  <Route path="/admin/classes" element={<ClassesPage />} />
+                  <Route path="/admin/sections" element={<SectionsPage />} />
+                  <Route path="/admin/subjects" element={<SubjectsPage />} />
+                  <Route path="/admin/academic-years" element={<AcademicYearsPage />} />
+                  <Route path="/admin/semesters" element={<SemestersPage />} />
                 </Route>
               </Route>
 

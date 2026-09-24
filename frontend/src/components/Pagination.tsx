@@ -1,3 +1,5 @@
+import { Button } from './Button'
+
 export function Pagination({
   page,
   pageSize,
@@ -10,38 +12,29 @@ export function Pagination({
   onPageChange: (page: number) => void
 }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
-  if (totalPages <= 1) return null
+  if (total === 0) return null
 
-  const start = total === 0 ? 0 : (page - 1) * pageSize + 1
-  const end = Math.min(page * pageSize, total)
+  const from = (page - 1) * pageSize + 1
+  const to = Math.min(page * pageSize, total)
 
   return (
-    <nav className="flex items-center justify-between border-t border-slate-200 px-2 py-3" aria-label="Pagination">
-      <p className="text-sm text-slate-600">
-        Showing <span className="font-medium">{start}</span>–<span className="font-medium">{end}</span> of{' '}
-        <span className="font-medium">{total}</span>
+    <div className="flex flex-col gap-3 border-t border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-sm text-slate-500">
+        Showing <span className="font-medium text-slate-700">{from}</span>–
+        <span className="font-medium text-slate-700">{to}</span> of{' '}
+        <span className="font-medium text-slate-700">{total}</span>
       </p>
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => onPageChange(page - 1)}
-          disabled={page <= 1}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-slate-50"
-        >
+      <div className="flex items-center gap-2">
+        <Button variant="secondary" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
           Previous
-        </button>
-        <span className="px-2 py-1.5 text-sm text-slate-500">
+        </Button>
+        <span className="px-2 text-sm text-slate-500">
           Page {page} of {totalPages}
         </span>
-        <button
-          type="button"
-          onClick={() => onPageChange(page + 1)}
-          disabled={page >= totalPages}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-slate-50"
-        >
+        <Button variant="secondary" disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
           Next
-        </button>
+        </Button>
       </div>
-    </nav>
+    </div>
   )
 }
