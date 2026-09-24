@@ -16,6 +16,8 @@ import { SemestersPage } from './pages/admin/SemestersPage'
 import { StudentsPage } from './pages/admin/StudentsPage'
 import { SubjectsPage } from './pages/admin/SubjectsPage'
 import { FacultyDashboardPage } from './pages/faculty/FacultyDashboardPage'
+import { FacultySessionDetailPage } from './pages/faculty/FacultySessionDetailPage'
+import { FacultySessionsPage } from './pages/faculty/FacultySessionsPage'
 import { HomeRedirect } from './pages/HomeRedirect'
 import { LoginPage } from './pages/LoginPage'
 import { StudentDashboardPage } from './pages/student/StudentDashboardPage'
@@ -56,6 +58,8 @@ function App() {
               <Route element={<ProtectedRoute allowedRoles={['FACULTY']} />}>
                 <Route element={<AppShell role="FACULTY" />}>
                   <Route path="/faculty" element={<FacultyDashboardPage />} />
+                  <Route path="/faculty/sessions" element={<FacultySessionsPage />} />
+                  <Route path="/faculty/sessions/:sessionId" element={<FacultySessionDetailPage />} />
                 </Route>
               </Route>
 
