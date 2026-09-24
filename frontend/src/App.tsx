@@ -5,17 +5,22 @@ import { AuthProvider } from './contexts/AuthContext'
 import { ToastProvider } from './contexts/ToastContext'
 import { AppShell } from './layouts/AppShell'
 import { AcademicYearsPage } from './pages/admin/AcademicYearsPage'
+import { AdminCorrectionsPage } from './pages/admin/AdminCorrectionsPage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { ClassesPage } from './pages/admin/ClassesPage'
 import { DepartmentsPage } from './pages/admin/DepartmentsPage'
 import { FacultyAssignmentsPage } from './pages/admin/FacultyAssignmentsPage'
 import { FacultyPage } from './pages/admin/FacultyPage'
 import { ProgramsPage } from './pages/admin/ProgramsPage'
+import { ReportsPage } from './pages/admin/ReportsPage'
 import { SectionsPage } from './pages/admin/SectionsPage'
 import { SemestersPage } from './pages/admin/SemestersPage'
+import { SettingsPage } from './pages/admin/SettingsPage'
 import { StudentsPage } from './pages/admin/StudentsPage'
 import { SubjectsPage } from './pages/admin/SubjectsPage'
+import { FacultyCorrectionsPage } from './pages/faculty/FacultyCorrectionsPage'
 import { FacultyDashboardPage } from './pages/faculty/FacultyDashboardPage'
+import { FacultyLowAttendancePage } from './pages/faculty/FacultyLowAttendancePage'
 import { FacultySessionDetailPage } from './pages/faculty/FacultySessionDetailPage'
 import { FacultySessionsPage } from './pages/faculty/FacultySessionsPage'
 import { HomeRedirect } from './pages/HomeRedirect'
@@ -52,6 +57,9 @@ function App() {
                   <Route path="/admin/students" element={<StudentsPage />} />
                   <Route path="/admin/faculty" element={<FacultyPage />} />
                   <Route path="/admin/faculty-assignments" element={<FacultyAssignmentsPage />} />
+                  <Route path="/admin/corrections" element={<AdminCorrectionsPage />} />
+                  <Route path="/admin/reports" element={<ReportsPage />} />
+                  <Route path="/admin/settings" element={<SettingsPage />} />
                 </Route>
               </Route>
 
@@ -60,6 +68,8 @@ function App() {
                   <Route path="/faculty" element={<FacultyDashboardPage />} />
                   <Route path="/faculty/sessions" element={<FacultySessionsPage />} />
                   <Route path="/faculty/sessions/:sessionId" element={<FacultySessionDetailPage />} />
+                  <Route path="/faculty/corrections" element={<FacultyCorrectionsPage />} />
+                  <Route path="/faculty/low-attendance" element={<FacultyLowAttendancePage />} />
                 </Route>
               </Route>
 
