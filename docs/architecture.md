@@ -102,7 +102,11 @@ All error responses follow:
 
 Domain exceptions (`backend/app/core/exceptions.py`) map to HTTP status +
 stable `code` string; a global exception handler ensures stack traces/secrets
-never leak in responses (see `16-security-spec.md`).
+never leak in responses (see `16-security-spec.md`). Pydantic request-body
+validation failures (`422`) use the same envelope with `code:
+"VALIDATION_ERROR"` and an additional `error.details` array carrying
+FastAPI's normal per-field error list (`loc`/`msg`/`type`), so the frontend
+can still show field-specific messages.
 
 ## AI integration
 

@@ -51,3 +51,28 @@ def client(db_session):
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
+
+
+@pytest.fixture()
+def make_auth_headers(client, db_session):
+    """Factory fixture: make_auth_headers([RoleName.ADMIN]) creates a fresh
+    user with those roles, logs in via the real endpoint, and returns
+    ready-to-use Authorization headers. Shared across test modules so every
+    future spec's tests don't re-derive this."""
+    from app.services import auth_service, user_service
+
+    password = "test-password-123"  # noqa: S105 (test fixture, not a real credential)
+    counter = {"value": 0}
+
+    def _make(role_names: list[RoleName]) -> dict:
+        counter["value"] += 1
+        email = f"fixture-user-{counter['value']}@example.com"
+        user_service.create_user_with_roles(
+            db_session, email=email, full_name="Fixture User", password=password, role_names=role_names
+        )
+        response = client.post("/api/v1/auth/login", json={"email": email, "password": password})
+        assert response.status_code == 200, response.text
+        token = response.json()["access_token"]
+        return {"Authorization": f"Bearer {token}"}
+
+    return _make

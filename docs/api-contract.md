@@ -31,3 +31,23 @@
 | POST | `/api/v1/users` | SPEC-03 | bearer, ADMIN — create a user + assign role(s) |
 | GET | `/api/v1/users` | SPEC-03 | bearer, ADMIN — paginated list (`?page=&page_size=`) |
 | PUT | `/api/v1/users/{id}/roles` | SPEC-03 | bearer, ADMIN — replace a user's role set |
+
+**Master data (SPEC-04)** — identical shape for all 7 resources below.
+Mutations (`POST`/`PATCH`/`DELETE`) require ADMIN; `GET` requires any
+authenticated user. `DELETE` performs a **soft delete** (`is_active=false`),
+never a hard delete — the row remains readable. `PATCH` is a partial update:
+omitted fields are left unchanged (`null` is not a valid way to *clear* a
+field — see `04-master-data-spec.md`).
+
+| Resource | Base path | Parent-scoped filter | Search fields |
+|---|---|---|---|
+| Department | `/api/v1/departments` | — | name, code |
+| Program | `/api/v1/programs` | `?department_id=` | name, code |
+| Academic Year | `/api/v1/academic-years` | — | name |
+| Semester | `/api/v1/semesters` | `?academic_year_id=` | name |
+| Class | `/api/v1/classes` | `?program_id=` | name |
+| Section | `/api/v1/sections` | `?class_id=` | name |
+| Subject | `/api/v1/subjects` | `?department_id=` | name, code |
+
+Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<parent_filter>=`,
+`GET {base}/{id}`, `PATCH {base}/{id}`, `DELETE {base}/{id}`.

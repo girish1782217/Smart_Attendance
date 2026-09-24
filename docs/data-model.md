@@ -21,6 +21,13 @@
 | `revoked_tokens` | SPEC-02 | Logout support for otherwise-stateless JWTs (Assumption A-2-1). Keyed by JWT `jti`; opportunistically pruned of expired rows on each write. |
 | `roles` | SPEC-03 | 3 fixed rows seeded by migration: `ADMIN`, `FACULTY`, `STUDENT` (`app/core/roles.py::RoleName`). No separate `permissions` table — see the simplification note in `03-rbac-spec.md`. |
 | `user_roles` | SPEC-03 | Many-to-many join, composite PK `(user_id, role_id)`, `ON DELETE CASCADE` both sides. A user may hold more than one role. |
+| `departments` | SPEC-04 | Top-level org unit. `name` and `code` both unique. |
+| `programs` | SPEC-04 | Belongs to a Department. `code` globally unique, `name` unique within department. |
+| `academic_years` | SPEC-04 | `name` unique, `start_date < end_date` enforced. |
+| `semesters` | SPEC-04 | Belongs to an AcademicYear. `name` unique within year; dates must fall within the parent year's range. |
+| `classes` | SPEC-04 | Belongs to a Program (model class `AcademicClass`, table `classes` — avoids the Python `class` keyword). `name` unique within program. |
+| `sections` | SPEC-04 | Belongs to a Class. `name` unique within class; optional `capacity`. |
+| `subjects` | SPEC-04 | Belongs to a Department. `code` globally unique. Deliberately not nested under Section — see `04-master-data-spec.md`'s Entity Hierarchy note. |
 
 ## `users`
 
@@ -56,3 +63,19 @@
 |---|---|---|
 | user_id | integer | PK (composite), FK → `users.id`, `ON DELETE CASCADE` |
 | role_id | integer | PK (composite), FK → `roles.id`, `ON DELETE CASCADE` |
+
+## Master data (SPEC-04)
+
+All 7 tables include the standard `id` / `created_at` / `updated_at` /
+`is_active` columns (via `TimestampMixin`/`SoftDeleteMixin`) in addition to
+what's listed below.
+
+| Table | Own columns | Constraints |
+|---|---|---|
+| `departments` | name, code | unique(name), unique(code) |
+| `programs` | name, code, department_id | unique(code), unique(department_id, name), FK department_id → departments.id |
+| `academic_years` | name, start_date, end_date | unique(name) |
+| `semesters` | name, academic_year_id, start_date, end_date | unique(academic_year_id, name), FK academic_year_id → academic_years.id |
+| `classes` | name, program_id | unique(program_id, name), FK program_id → programs.id |
+| `sections` | name, class_id, capacity (nullable) | unique(class_id, name), FK class_id → classes.id |
+| `subjects` | name, code, department_id, credits (nullable) | unique(code), FK department_id → departments.id |

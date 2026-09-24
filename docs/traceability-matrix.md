@@ -10,7 +10,7 @@ the last full regression run.
 | REQ-AUTH-001 | Login issues JWT | SPEC-02 | `app/services/auth_service.py`, `POST /api/v1/auth/login` | `test_auth.py` | PASS (14/14) |
 | REQ-AUTH-002 | Protected routes reject missing/invalid/expired/revoked tokens | SPEC-02 | `app/api/deps.py::get_current_user` | `test_auth.py` | PASS (14/14) |
 | REQ-RBAC-001 | Role-gated endpoints enforce permissions server-side | SPEC-03 | `app/api/deps.py::require_role`, `app/api/v1/users.py` | `test_rbac.py` | PASS (23/23) |
-| REQ-MASTER-001 | Master data CRUD + validation + pagination | SPEC-04 | `departments/programs/academic_years/semesters/classes/sections/subjects` routers | `test_master_data.py` | PENDING |
+| REQ-MASTER-001 | Master data CRUD + validation + pagination | SPEC-04 | `app/api/v1/master_data/*` (7 routers), `app/repositories/crud_base.py` | `test_master_data.py` | PASS (48/48) |
 | REQ-STUDENT-001 | Student CRUD, dedup, search/filter/pagination | SPEC-05 | `StudentService` | `test_students.py` | PENDING |
 | REQ-FACULTY-001 | Faculty CRUD + assignments | SPEC-06 | `FacultyService`, `FacultyAssignment` | `test_faculty.py` | PENDING |
 | REQ-SESSION-001 | Attendance session creation & validation | SPEC-07 | `AttendanceSessionService` | `test_attendance_sessions.py` | PENDING |

@@ -1,6 +1,8 @@
 import logging
 
 from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -13,8 +15,11 @@ from app.core.logging_config import configure_logging
 logger = logging.getLogger(__name__)
 
 
-def _error_envelope(code: str, message: str) -> dict:
-    return {"success": False, "error": {"code": code, "message": message}}
+def _error_envelope(code: str, message: str, details: object = None) -> dict:
+    error: dict = {"code": code, "message": message}
+    if details is not None:
+        error["details"] = details
+    return {"success": False, "error": error}
 
 
 def create_app() -> FastAPI:
@@ -34,6 +39,15 @@ def create_app() -> FastAPI:
     @app.exception_handler(AppError)
     async def handle_app_error(request: Request, exc: AppError) -> JSONResponse:
         return JSONResponse(status_code=exc.status_code, content=_error_envelope(exc.code, exc.message))
+
+    @app.exception_handler(RequestValidationError)
+    async def handle_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:
+        return JSONResponse(
+            status_code=422,
+            content=_error_envelope(
+                "VALIDATION_ERROR", "Invalid request data.", details=jsonable_encoder(exc.errors())
+            ),
+        )
 
     @app.exception_handler(Exception)
     async def handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:

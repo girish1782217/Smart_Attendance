@@ -108,6 +108,18 @@ NFR-7. **Portability** — DATABASE_URL-driven persistence; SQLite for
        dev/test, Postgres-compatible schema/queries for production (see
        Assumption A-1).
 
+## 5a. Spec Numbering Resolution
+
+The brief's own §2 file list and §23 spec breakdown disagree (§2 omits a
+dedicated RBAC file and shifts subsequent numbers by one, and folds
+class/section/subject into a file not present in §23's numbered list). §23's
+breakdown is authoritative for this project (00 Product, 01 Foundation, 02
+Auth, 03 RBAC, 04 Master Data, ... 18 Acceptance) — it is the more detailed,
+explicitly-numbered source, matches the DB design in §18 (which groups
+department/program/academic-year/semester/class/section/subject together as
+one "master data" concern), and is what SPEC 00–03 have already been built
+against. `docs/sdd/` filenames follow §23's numbers.
+
 ## 6. Assumptions (materially resolved ambiguities)
 
 Each assumption below was made because the underlying decision would not
