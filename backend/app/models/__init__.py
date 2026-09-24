@@ -1,5 +1,6 @@
 from app.models.academic_class import AcademicClass
 from app.models.academic_year import AcademicYear
+from app.models.attendance_session import AttendanceSession, AttendanceSessionStatus
 from app.models.department import Department
 from app.models.faculty import Faculty
 from app.models.faculty_assignment import FacultyAssignment
@@ -27,4 +28,6 @@ __all__ = [
     "Student",
     "Faculty",
     "FacultyAssignment",
+    "AttendanceSession",
+    "AttendanceSessionStatus",
 ]

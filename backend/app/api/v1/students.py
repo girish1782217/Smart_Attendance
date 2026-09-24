@@ -13,18 +13,7 @@ router = APIRouter(prefix="/students", tags=["students"])
 
 
 def _to_response(student: Student) -> StudentResponse:
-    return StudentResponse(
-        id=student.id,
-        user_id=student.user_id,
-        email=student.user.email,
-        full_name=student.user.full_name,
-        roll_number=student.roll_number,
-        section_id=student.section_id,
-        phone=student.phone,
-        is_active=student.is_active,
-        created_at=student.created_at,
-        updated_at=student.updated_at,
-    )
+    return StudentResponse.from_model(student)
 
 
 @router.post("", response_model=StudentResponse, status_code=201)

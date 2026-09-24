@@ -80,3 +80,12 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 | GET | `/api/v1/faculty-assignments?page=&page_size=&faculty_id=&subject_id=&section_id=&semester_id=` | ADMIN, FACULTY — **a FACULTY caller's `faculty_id` is always overridden server-side to their own**, never taken from the query string |
 | GET | `/api/v1/faculty-assignments/{id}` | ADMIN, FACULTY |
 | DELETE | `/api/v1/faculty-assignments/{id}` | ADMIN — soft delete (deactivating and later recreating the identical combination is allowed; uniqueness is enforced only among active rows) |
+
+**Attendance Sessions (SPEC-07)**
+
+| Method | Path | Auth |
+|---|---|---|
+| POST | `/api/v1/attendance-sessions` | ADMIN, FACULTY — ADMIN must supply `faculty_id`; a FACULTY caller's `faculty_id` is always their own |
+| GET | `/api/v1/attendance-sessions?page=&page_size=&faculty_id=&section_id=&subject_id=&from_date=&to_date=` | ADMIN, FACULTY — FACULTY is always scoped to their own sessions |
+| GET | `/api/v1/attendance-sessions/{id}` | ADMIN, FACULTY (own only) |
+| GET | `/api/v1/attendance-sessions/{id}/roster` | ADMIN, FACULTY (own only) — active students currently in the session's section |

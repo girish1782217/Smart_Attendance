@@ -1,6 +1,12 @@
+from __future__ import annotations
+
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
+
+if TYPE_CHECKING:
+    from app.models.student import Student
 
 
 class StudentCreateRequest(BaseModel):
@@ -32,3 +38,18 @@ class StudentResponse(BaseModel):
     is_active: bool
     created_at: datetime
     updated_at: datetime
+
+    @classmethod
+    def from_model(cls, student: "Student") -> "StudentResponse":
+        return cls(
+            id=student.id,
+            user_id=student.user_id,
+            email=student.user.email,
+            full_name=student.user.full_name,
+            roll_number=student.roll_number,
+            section_id=student.section_id,
+            phone=student.phone,
+            is_active=student.is_active,
+            created_at=student.created_at,
+            updated_at=student.updated_at,
+        )

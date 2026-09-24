@@ -23,6 +23,21 @@ def get_active_duplicate(
     )
 
 
+def get_active_for_faculty_subject_section(
+    db: Session, *, faculty_id: int, subject_id: int, section_id: int
+) -> FacultyAssignment | None:
+    return (
+        db.query(FacultyAssignment)
+        .filter(
+            FacultyAssignment.faculty_id == faculty_id,
+            FacultyAssignment.subject_id == subject_id,
+            FacultyAssignment.section_id == section_id,
+            FacultyAssignment.is_active.is_(True),
+        )
+        .first()
+    )
+
+
 def list_paginated(
     db: Session,
     *,
