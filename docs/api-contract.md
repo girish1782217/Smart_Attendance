@@ -25,3 +25,6 @@
 | Method | Path | Spec | Auth |
 |---|---|---|---|
 | GET | `/health` | SPEC-01 | none |
+| POST | `/api/v1/auth/login` | SPEC-02 | none — `{email, password}` → `{access_token, token_type}` |
+| GET | `/api/v1/auth/me` | SPEC-02 | bearer — returns the caller's own profile |
+| POST | `/api/v1/auth/logout` | SPEC-02 | bearer — revokes the presented token |

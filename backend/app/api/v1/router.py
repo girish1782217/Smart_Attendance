@@ -1,6 +1,9 @@
 from fastapi import APIRouter
 
+from app.api.v1.auth import router as auth_router
+
 # Aggregates all versioned (/api/v1/*) routers. Each spec adds its own
-# `include_router(...)` call here as it introduces endpoints (auth in
-# SPEC 02, master data in SPEC 04, etc.) — kept empty until then.
+# `include_router(...)` call here as it introduces endpoints (master data in
+# SPEC 04, etc.).
 api_v1_router = APIRouter()
+api_v1_router.include_router(auth_router)
