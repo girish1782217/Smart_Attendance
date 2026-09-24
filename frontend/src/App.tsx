@@ -8,9 +8,12 @@ import { AcademicYearsPage } from './pages/admin/AcademicYearsPage'
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage'
 import { ClassesPage } from './pages/admin/ClassesPage'
 import { DepartmentsPage } from './pages/admin/DepartmentsPage'
+import { FacultyAssignmentsPage } from './pages/admin/FacultyAssignmentsPage'
+import { FacultyPage } from './pages/admin/FacultyPage'
 import { ProgramsPage } from './pages/admin/ProgramsPage'
 import { SectionsPage } from './pages/admin/SectionsPage'
 import { SemestersPage } from './pages/admin/SemestersPage'
+import { StudentsPage } from './pages/admin/StudentsPage'
 import { SubjectsPage } from './pages/admin/SubjectsPage'
 import { FacultyDashboardPage } from './pages/faculty/FacultyDashboardPage'
 import { HomeRedirect } from './pages/HomeRedirect'
@@ -44,6 +47,9 @@ function App() {
                   <Route path="/admin/subjects" element={<SubjectsPage />} />
                   <Route path="/admin/academic-years" element={<AcademicYearsPage />} />
                   <Route path="/admin/semesters" element={<SemestersPage />} />
+                  <Route path="/admin/students" element={<StudentsPage />} />
+                  <Route path="/admin/faculty" element={<FacultyPage />} />
+                  <Route path="/admin/faculty-assignments" element={<FacultyAssignmentsPage />} />
                 </Route>
               </Route>
 

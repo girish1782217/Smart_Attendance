@@ -18,7 +18,7 @@ import { StatusBadge } from './StatusBadge'
 export interface MasterDataField {
   name: string
   label: string
-  type: 'text' | 'number' | 'date' | 'select'
+  type: 'text' | 'number' | 'date' | 'select' | 'password' | 'email'
   required?: boolean
   placeholder?: string
   hint?: string
@@ -27,6 +27,7 @@ export interface MasterDataField {
   options?: { value: number; label: string }[]
   numeric?: boolean // for select: cast the value to a number
   lockedAfterCreate?: boolean // backend's Update schema has no such field -- disable once a row exists
+  createOnly?: boolean // e.g. password -- not part of the Update schema at all, hidden once a row exists
 }
 
 interface MasterDataRow {
@@ -77,7 +78,7 @@ function buildPayload(
 ): Record<string, unknown> {
   const payload: Record<string, unknown> = {}
   for (const field of fields) {
-    if (mode === 'edit' && field.lockedAfterCreate) continue
+    if (mode === 'edit' && (field.lockedAfterCreate || field.createOnly)) continue
     payload[field.name] = parseFieldValue(field, values[field.name] ?? '')
   }
   return payload
@@ -299,6 +300,7 @@ export function MasterDataManager<T extends MasterDataRow, TCreate, TUpdate>({
             className="flex flex-col gap-4"
           >
             {fields.map((field) => {
+              if (modalMode === 'edit' && field.createOnly) return null
               const value = formValues[field.name] ?? ''
               const isLocked = modalMode === 'edit' && field.lockedAfterCreate
               const hint = isLocked ? "Can't be changed after creation." : field.hint
