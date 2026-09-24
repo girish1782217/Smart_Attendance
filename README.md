@@ -6,9 +6,10 @@ A full-stack attendance management system for a college (~5,000 students,
 [`docs/traceability-matrix.md`](docs/traceability-matrix.md) for requirement
 → test mapping.
 
-**Status**: under active development. SPEC 00 (product foundation) and
-SPEC 01 (project foundation) are complete; see the traceability matrix for
-current progress across all 18 specifications.
+**Status**: under active development. All backend specifications (SPEC
+00–16) are complete — 166/166 backend tests passing. Frontend UI is in
+progress; see the traceability matrix for current progress across all 18
+specifications.
 
 ## Architecture
 
@@ -89,7 +90,19 @@ cd backend
 
 ### Seed data
 
-Introduced alongside SPEC 04/05/06 (master data, students, faculty).
+Populates 3 departments, 24 faculty, 120 students across 6 sections, and
+~3 weeks of realistic attendance history (`backend/scripts/seed.py`):
+
+```bash
+cd backend
+./venv/Scripts/alembic.exe upgrade head   # tables must exist first
+./venv/Scripts/python.exe scripts/seed.py
+```
+
+Every seeded account (admin, faculty, and student) uses the password
+`Password123!` — see [Demo Credentials](#demo-credentials) below. Intended
+for a fresh database; re-running against already-seeded data will fail on
+duplicate emails/codes.
 
 ### Running backend tests
 
@@ -146,7 +159,14 @@ six required E2E workflows tracked in `docs/testing-strategy.md`.
 
 ## Demo Credentials
 
-Added once SPEC 02 (authentication) and seed data (SPEC 04–06) land.
+After running `scripts/seed.py`, every account uses the password
+`Password123!`.
+
+| Role | Email |
+|---|---|
+| Admin | `admin@college.edu` |
+| Faculty | `faculty.cse1@college.edu` (or `faculty.ece1@`, `faculty.mech1@`, ... up to 8 per department) |
+| Student | `student.csea001@college.edu` (roll number pattern `{DEPT}{SECTION}{NNN}`, e.g. `CSEA001`–`CSEA020`, `CSEB001`–`CSEB020`, similarly for ECE/MECH) |
 
 ## Known Limitations
 
