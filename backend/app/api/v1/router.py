@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from app.api.v1.attendance_history import router as attendance_history_router
 from app.api.v1.attendance_records import router as attendance_records_router
 from app.api.v1.attendance_sessions import router as attendance_sessions_router
 from app.api.v1.auth import router as auth_router
@@ -22,3 +23,4 @@ api_v1_router.include_router(faculty_assignments_router)
 api_v1_router.include_router(attendance_sessions_router)
 api_v1_router.include_router(attendance_records_router)
 api_v1_router.include_router(corrections_router)
+api_v1_router.include_router(attendance_history_router)

@@ -102,3 +102,10 @@ Each resource exposes: `POST {base}`, `GET {base}?page=&page_size=&search=&<pare
 | GET | `/api/v1/corrections/{id}` | ADMIN, FACULTY (own), STUDENT (own) |
 | POST | `/api/v1/corrections/{id}/approve` | ADMIN, FACULTY (own session, never their own submitted request) |
 | POST | `/api/v1/corrections/{id}/reject` | ADMIN, FACULTY (own session, never their own submitted request) |
+
+**Attendance History (SPEC-10)**
+
+| Method | Path | Auth |
+|---|---|---|
+| GET | `/api/v1/students/{id}/attendance-summary` | ADMIN, FACULTY (own subject's records only), STUDENT (own only) — overall + per-subject percentage breakdown |
+| GET | `/api/v1/students/{id}/attendance-history?page=&page_size=&subject_id=&from_date=&to_date=` | same scoping — paginated detail rows, each showing correction outcome if any |

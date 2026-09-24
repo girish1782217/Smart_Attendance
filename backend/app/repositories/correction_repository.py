@@ -65,6 +65,22 @@ def list_paginated(
     return items, total
 
 
+def list_approved_for_records(db: Session, record_ids: list[int]) -> list[CorrectionRequest]:
+    """Batched (not N+1) lookup used to annotate a page of attendance
+    history rows with their correction outcome, if any."""
+    if not record_ids:
+        return []
+    return (
+        db.query(CorrectionRequest)
+        .options(joinedload(CorrectionRequest.reviewed_by))
+        .filter(
+            CorrectionRequest.attendance_record_id.in_(record_ids),
+            CorrectionRequest.status == CorrectionRequestStatus.APPROVED,
+        )
+        .all()
+    )
+
+
 def create(db: Session, correction: CorrectionRequest) -> CorrectionRequest:
     db.add(correction)
     db.commit()
