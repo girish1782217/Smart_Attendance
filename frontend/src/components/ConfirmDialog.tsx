@@ -1,3 +1,4 @@
+import { Button } from './Button'
 import { Modal } from './Modal'
 
 export function ConfirmDialog({
@@ -21,23 +22,12 @@ export function ConfirmDialog({
     <Modal title={title} onClose={onCancel}>
       <p className="text-sm text-slate-600">{message}</p>
       <div className="mt-6 flex justify-end gap-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-        >
+        <Button variant="secondary" onClick={onCancel}>
           Cancel
-        </button>
-        <button
-          type="button"
-          onClick={onConfirm}
-          disabled={isSubmitting}
-          className={`rounded-md px-4 py-2 text-sm font-medium text-white disabled:opacity-60 ${
-            danger ? 'bg-red-600 hover:bg-red-700' : 'bg-slate-800 hover:bg-slate-900'
-          }`}
-        >
-          {isSubmitting ? 'Please wait…' : confirmLabel}
-        </button>
+        </Button>
+        <Button variant={danger ? 'danger' : 'primary'} onClick={onConfirm} isLoading={isSubmitting}>
+          {confirmLabel}
+        </Button>
       </div>
     </Modal>
   )

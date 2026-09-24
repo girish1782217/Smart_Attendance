@@ -11,15 +11,17 @@ export function FormField({ label, error, hint, id, className = '', ...rest }: F
   const errorId = `${fieldId}-error`
   return (
     <div>
-      <label htmlFor={fieldId} className="mb-1 block text-sm font-medium text-slate-700">
+      <label htmlFor={fieldId} className="mb-1.5 block text-sm font-medium text-slate-700">
         {label}
       </label>
       <input
         id={fieldId}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className={`w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-400 ${
-          error ? 'border-red-400' : 'border-slate-300'
+        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:outline-none focus:ring-2 ${
+          error
+            ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
+            : 'border-slate-300 focus:border-brand-500 focus:ring-brand-500/20'
         } ${className}`}
         {...rest}
       />
@@ -48,13 +50,15 @@ export function SelectField({
   const fieldId = id ?? label.toLowerCase().replace(/\s+/g, '-')
   return (
     <div>
-      <label htmlFor={fieldId} className="mb-1 block text-sm font-medium text-slate-700">
+      <label htmlFor={fieldId} className="mb-1.5 block text-sm font-medium text-slate-700">
         {label}
       </label>
       <select
         id={fieldId}
-        className={`w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-400 ${
-          error ? 'border-red-400' : 'border-slate-300'
+        className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-slate-900 shadow-sm transition focus:outline-none focus:ring-2 ${
+          error
+            ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
+            : 'border-slate-300 focus:border-brand-500 focus:ring-brand-500/20'
         }`}
         {...rest}
       >

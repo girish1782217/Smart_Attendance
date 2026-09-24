@@ -29,17 +29,17 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative z-10 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
+        className="relative z-10 w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl ring-1 ring-black/5"
       >
         <div className="mb-4 flex items-start justify-between">
-          <h2 id="modal-title" className="text-lg font-semibold text-slate-900">
+          <h2 id="modal-title" className="text-lg font-semibold tracking-tight text-slate-900">
             {title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="text-slate-400 hover:text-slate-600"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
           >
             ✕
           </button>
