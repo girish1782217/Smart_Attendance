@@ -1,7 +1,8 @@
-import { ApiError } from '../api/client'
-
 export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
-  const message = error instanceof ApiError ? error.message : 'Something went wrong. Please try again.'
+  // Covers ApiError (a subclass) too -- previously only ApiError.message was
+  // trusted, so a plain `new Error('...')` (e.g. "no profile linked") fell
+  // through to the generic fallback and hid the real, actionable message.
+  const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.'
   return (
     <div
       role="alert"

@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
+import { CalendarCheck } from 'lucide-react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 import { correctionsApi, type Correction, type CorrectionRequestStatus } from '../../api/corrections'
+import { Button } from '../../components/Button'
 import { DataTable, type DataTableColumn } from '../../components/DataTable'
 import { PageHeader } from '../../components/PageHeader'
 import { Pagination } from '../../components/Pagination'
@@ -53,7 +56,25 @@ export function StudentMyCorrectionsPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <PageHeader title="My Correction Requests" description="Track the status of attendance corrections you've requested." />
+      <PageHeader
+        title="My Correction Requests"
+        description="Track the status of attendance corrections you've requested."
+        action={
+          <Link to="/student/attendance">
+            <Button>
+              <CalendarCheck className="h-4 w-4" strokeWidth={2} />
+              Request a Correction
+            </Button>
+          </Link>
+        }
+      />
+      <p className="-mt-3 text-sm text-slate-500">
+        Corrections are requested against a specific session record — open{' '}
+        <Link to="/student/attendance" className="font-medium text-brand-600 hover:underline">
+          My Attendance
+        </Link>{' '}
+        and use "Request Correction" on the record you want changed.
+      </p>
 
       <select
         value={statusFilter}
