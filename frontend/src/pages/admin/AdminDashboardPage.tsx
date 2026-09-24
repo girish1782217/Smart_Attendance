@@ -39,10 +39,10 @@ export function AdminDashboardPage() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Total Students" value={data.total_students} icon={GraduationCap} />
-        <StatCard label="Total Faculty" value={data.total_faculty} icon={UserCog} />
-        <StatCard label="Departments" value={data.total_departments} icon={Building2} />
-        <StatCard label="Classes" value={data.total_classes} icon={ClipboardList} />
+        <StatCard label="Total Students" value={data.total_students} icon={GraduationCap} to="/admin/students" />
+        <StatCard label="Total Faculty" value={data.total_faculty} icon={UserCog} to="/admin/faculty" />
+        <StatCard label="Departments" value={data.total_departments} icon={Building2} to="/admin/departments" />
+        <StatCard label="Classes" value={data.total_classes} icon={ClipboardList} to="/admin/classes" />
         <StatCard
           label="Today's Sessions"
           value={`${data.today_sessions_submitted} / ${data.today_sessions_total} submitted`}
@@ -53,18 +53,21 @@ export function AdminDashboardPage() {
           value={formatPercentage(data.overall_attendance_percentage)}
           icon={TrendingUp}
           tone="success"
+          to="/admin/reports"
         />
         <StatCard
           label="Students Below Threshold"
           value={data.students_below_threshold}
           icon={AlertTriangle}
           tone={data.students_below_threshold > 0 ? 'warning' : 'default'}
+          to="/admin/reports"
         />
         <StatCard
           label="Pending Corrections"
           value={data.pending_correction_requests}
           icon={FileEdit}
           tone={data.pending_correction_requests > 0 ? 'warning' : 'default'}
+          to="/admin/corrections"
         />
       </div>
     </div>

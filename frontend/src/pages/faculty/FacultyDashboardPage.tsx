@@ -25,19 +25,21 @@ export function FacultyDashboardPage() {
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Assigned Sections" value={data.assigned_sections} icon={Users} />
-        <StatCard label="Today's Sessions" value={data.today_sessions} icon={CalendarCheck} />
-        <StatCard label="Total Sessions Conducted" value={data.total_sessions} icon={ClipboardCheck} />
+        <StatCard label="Today's Sessions" value={data.today_sessions} icon={CalendarCheck} to="/faculty/sessions" />
+        <StatCard label="Total Sessions Conducted" value={data.total_sessions} icon={ClipboardCheck} to="/faculty/sessions" />
         <StatCard
           label="Students Below Threshold"
           value={data.students_below_threshold}
           icon={AlertTriangle}
           tone={data.students_below_threshold > 0 ? 'warning' : 'default'}
+          to="/faculty/low-attendance"
         />
         <StatCard
           label="Pending Corrections"
           value={data.pending_correction_requests}
           icon={FileEdit}
           tone={data.pending_correction_requests > 0 ? 'warning' : 'default'}
+          to="/faculty/corrections"
         />
       </div>
     </div>

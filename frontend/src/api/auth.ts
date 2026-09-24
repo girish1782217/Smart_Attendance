@@ -18,6 +18,8 @@ export interface CurrentUser {
   is_active: boolean
   created_at: string
   roles: RoleName[]
+  student_id: number | null
+  faculty_id: number | null
 }
 
 export function login(payload: LoginRequest): Promise<TokenResponse> {

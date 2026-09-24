@@ -47,13 +47,20 @@ export function StudentDashboardPage() {
           value={formatPercentage(data.overall.percentage)}
           icon={TrendingUp}
           tone={data.is_low_attendance ? 'danger' : 'success'}
+          to="/student/attendance"
         />
         <StatCard
           label="Present / Total"
           value={`${data.overall.present_count + data.overall.late_count} / ${data.overall.present_count + data.overall.absent_count + data.overall.late_count}`}
           icon={CalendarCheck}
+          to="/student/attendance"
         />
-        <StatCard label="Pending Correction Requests" value={data.pending_correction_requests} icon={FileEdit} />
+        <StatCard
+          label="Pending Correction Requests"
+          value={data.pending_correction_requests}
+          icon={FileEdit}
+          to="/student/corrections"
+        />
       </div>
 
       <section>

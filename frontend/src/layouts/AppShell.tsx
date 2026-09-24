@@ -1,7 +1,6 @@
 import {
   AlertTriangle,
   BarChart3,
-  Bell,
   Building2,
   CalendarCheck,
   CalendarRange,
@@ -20,6 +19,7 @@ import {
 import { NavLink, Outlet } from 'react-router-dom'
 
 import { useAuth } from '../contexts/AuthContext'
+import { NotificationsBell } from '../components/NotificationsBell'
 import type { RoleName } from '../types/roles'
 
 interface NavItem {
@@ -122,13 +122,7 @@ export function AppShell({ role }: { role: RoleName }) {
           <div className="hidden sm:block" />
 
           <div className="flex items-center gap-4">
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="relative flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-            >
-              <Bell className="h-5 w-5" strokeWidth={2} />
-            </button>
+            <NotificationsBell role={role} />
 
             <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
               <div className="hidden text-right sm:block">
